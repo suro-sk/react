@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import Header from './Header';
-import CurrentDay from './CurrentDay';
+import Product from "./Product";
 import Footer from './Footer';
 import './App.css';
 
@@ -10,9 +10,22 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <Header/>
-                <CurrentDay/>
-                <Footer/>
             </header>
+            <section className="shop">
+                <h2>Shop</h2>
+                <div className="products-holder">
+                    <Product name="banabas" price="$10" description="Fresh bananas from Ecuador"/>
+                    <Product name="banabas" price="$10" description="Fresh bananas from Ecuador"/>
+                    <Product name="banabas" price="$10" description="Fresh bananas from Ecuador"/>
+                    <Product name="banabas" price="$10" description="Fresh bananas from Ecuador"/>
+                    <Product name="banabas" price="$10" description="Fresh bananas from Ecuador"/>
+                    <Product name="banabas" price="$10" description="Fresh bananas from Ecuador"/>
+                    <Product name="banabas" price="$10" description="Fresh bananas from Ecuador"/>
+                    <Product name="banabas" price="$10" description="Fresh bananas from Ecuador"/>
+                    <Product name="banabas" price="$10" description="Fresh bananas from Ecuador"/>
+                </div>
+            </section>
+            <Footer/>
         </div>
     );
 }
