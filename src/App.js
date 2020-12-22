@@ -14,17 +14,17 @@ function App() {
             <section className="shop">
                 <h2>Shop</h2>
                 <div className="products-holder">
-                    <Product name="Bananas" price="$10" description="Fresh bananas from Ecuador"/>
-                    <Product name="Apples" price="$8" description="Juicy apples"/>
-                    <Product name="Apricots" price="$12" description="Tasty Apricots from Armenia"/>
+                    <Product name="Bananas" price="10" description="Fresh bananas from Ecuador"/>
+                    <Product name="Apples" price="8" description="Juicy apples"/>
+                    <Product name="Apricots" price="12" description="Tasty Apricots from Armenia"/>
 
-                    <Product name="Bananas" price="$10" description="Fresh bananas from Ecuador"/>
-                    <Product name="Apples" price="$8" description="Juicy apples"/>
-                    <Product name="Apricots" price="$12" description="Tasty Apricots from Armenia"/>
+                    <Product name="Bananas" price="10" description="Fresh bananas from Ecuador"/>
+                    <Product name="Apples" price="8" description="Juicy apples"/>
+                    <Product name="Apricots" price="12" description="Tasty Apricots from Armenia"/>
 
-                    <Product name="Bananas" price="$10" description="Fresh bananas from Ecuador"/>
-                    <Product name="Apples" price="$8" description="Juicy apples"/>
-                    <Product name="Apricots" price="$12" description="Tasty Apricots from Armenia"/>
+                    <Product name="Bananas" price="10" description="Fresh bananas from Ecuador"/>
+                    <Product name="Apples" price="8" description="Juicy apples"/>
+                    <Product name="Apricots" price="12" description="Tasty Apricots from Armenia"/>
 
                 </div>
             </section>
