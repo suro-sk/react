@@ -26,6 +26,50 @@
     color: #61dafb;
 }
 
+.todo-list {
+    max-width: 500px;
+    margin: auto;
+}
+
+.todo-list ol {
+    padding: 0;
+}
+
+.todo-list li {
+    margin-bottom: 5px;
+    border: 1px solid #fff;
+    padding: 5px 10px;
+    text-align: left;
+}
+
+.todo-list .controls-area {
+    display: flex;
+}
+
+.todo-list .controls-area button {
+    flex-basis: 100px;
+    flex-shrink: 0;
+    height: 40px;
+    border: none;
+    background-color: #a21a1a;
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.todo-list .controls-area input {
+    color: #ffffff;
+    background-color: transparent;
+    border: 2px solid #a21a1a;
+    font-size: 18px;
+    padding: 5px 15px;
+    flex-grow: 1;
+}
+
+.todo-list .controls-area input:focus {
+    border: 2px solid #a21a1a;
+    outline: 0;
+}
+
 footer {
     margin-top: 40px;
 }
