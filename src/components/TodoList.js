@@ -17,11 +17,23 @@ export default class TodoList extends Component {
 
     handleTaskCreating = (e) => {
         e.preventDefault();
-        if (!this.state.inputValue.length) return;
-        
+        let upcomingTask = this.state.inputValue.trim();
+
+        if (!upcomingTask) return;
+
         this.setState({
-            tasks: [...this.state.tasks, ...[this.state.inputValue]],
+            tasks: [...this.state.tasks, upcomingTask],
             inputValue: ''
+        })
+    }
+
+    deleteTask = (taskId) => {
+        const remainingTasks = this.state.tasks.filter((task, idx) => {
+            return taskId !== idx
+        });
+
+        this.setState({
+            tasks: remainingTasks
         })
     }
 
@@ -29,7 +41,7 @@ export default class TodoList extends Component {
         const generatedTasks = this.state.tasks.map((el, i) => {
             return (
                 <li key={i}>
-                    <Task name={el}/>
+                    <Task name={el} taskId={i} deleteTask={this.deleteTask}/>
                 </li>
             )
         })
@@ -41,7 +53,7 @@ export default class TodoList extends Component {
                            placeholder="Add Your Task"/>
                     <button>Add</button>
                 </form>
-                <ol className="tasks-area">{generatedTasks}</ol>
+                <ol className="tasks-area">{generatedTasks.length ? generatedTasks : 'You hav not created any task yet.'}</ol>
             </div>
         )
     }

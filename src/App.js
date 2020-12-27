@@ -1,17 +1,12 @@
-import Header from './Header';
-import TodoList from "./todo-list/TodoList";
-import Footer from './Footer';
-import './App.css';
-
+import TodoList from "./components/TodoList";
+import './App.scss';
 
 function App() {
     return (
         <div className="App">
-            <header className="App-header">
-                <Header/>
-            </header>
-            <TodoList/>
-            <Footer/>
+            <div className="container">
+                <TodoList/>
+            </div>
         </div>
     );
 }
