@@ -1,5 +1,9 @@
 import {Component} from 'react';
 import Task from "./Task";
+import Form from 'react-bootstrap/Form'
+import FormControl from 'react-bootstrap/FormControl'
+import InputGroup from 'react-bootstrap/InputGroup'
+import Button from 'react-bootstrap/Button'
 
 
 export default class TodoList extends Component {
@@ -17,9 +21,11 @@ export default class TodoList extends Component {
 
     handleTaskCreating = (e) => {
         e.preventDefault();
-        let upcomingTask = this.state.inputValue.trim();
-
-        if (!upcomingTask) return;
+        let upcomingTaskTitle = this.state.inputValue.trim();
+        if (!upcomingTaskTitle) return;
+        let upcomingTask = {
+            title: upcomingTaskTitle
+        };
 
         this.setState({
             tasks: [...this.state.tasks, upcomingTask],
@@ -40,20 +46,34 @@ export default class TodoList extends Component {
     render() {
         const generatedTasks = this.state.tasks.map((el, i) => {
             return (
-                <li key={i}>
-                    <Task name={el} taskId={i} deleteTask={this.deleteTask}/>
-                </li>
+                <div key={i} className="col-xl-3 col-lg-4 col-md-6 task">
+                    <Task task={el} taskId={i} deleteTask={this.deleteTask}/>
+                </div>
             )
         })
+         const noTasks = <p className="mx-auto">You have not created any task yet.</p>
 
         return (
+
             <div className="todo-list">
-                <form className="controls-area" onSubmit={this.handleTaskCreating}>
-                    <input type="text" value={this.state.inputValue} onChange={this.handleInputChange}
-                           placeholder="Add Your Task"/>
-                    <button>Add</button>
-                </form>
-                <ol className="tasks-area">{generatedTasks.length ? generatedTasks : 'You hav not created any task yet.'}</ol>
+
+                <Form className="controls-area" onSubmit={this.handleTaskCreating}>
+
+                    <InputGroup className="mb-5">
+                        <FormControl
+                            placeholder="Add Your Task"
+                            aria-label="Add Your Task"
+                            aria-describedby="basic-addon2"
+                            value={this.state.inputValue}
+                            onChange={this.handleInputChange}
+                        />
+                        <InputGroup.Append>
+                            <Button type="submit" variant="outline-secondary">Add Task</Button>
+                        </InputGroup.Append>
+                    </InputGroup>
+                </Form>
+                <div
+                    className="tasks-area row">{generatedTasks.length ? generatedTasks : noTasks}</div>
             </div>
         )
     }
