@@ -1,5 +1,4 @@
 import {Component} from 'react';
-import trashIcon from '../assets/trash.svg';
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 
