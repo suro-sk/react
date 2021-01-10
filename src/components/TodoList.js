@@ -1,4 +1,5 @@
 import {Component} from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import Task from "./Task";
 import Form from 'react-bootstrap/Form'
 import FormControl from 'react-bootstrap/FormControl'
@@ -24,7 +25,8 @@ export default class TodoList extends Component {
         let upcomingTaskTitle = this.state.inputValue.trim();
         if (!upcomingTaskTitle) return;
         let upcomingTask = {
-            title: upcomingTaskTitle
+            title: upcomingTaskTitle,
+            _id: uuidv4()
         };
 
         this.setState({
@@ -34,8 +36,8 @@ export default class TodoList extends Component {
     }
 
     deleteTask = (taskId) => {
-        const remainingTasks = this.state.tasks.filter((task, idx) => {
-            return taskId !== idx
+        const remainingTasks = this.state.tasks.filter((task) => {
+            return taskId !== task._id
         });
 
         this.setState({
@@ -44,10 +46,10 @@ export default class TodoList extends Component {
     }
 
     render() {
-        const generatedTasks = this.state.tasks.map((el, i) => {
+        const generatedTasks = this.state.tasks.map((task) => {
             return (
-                <div key={i} className="col-xl-3 col-lg-4 col-md-6 task">
-                    <Task task={el} taskId={i} deleteTask={this.deleteTask}/>
+                <div key={task._id} className="col-xl-3 col-lg-4 col-md-6 task">
+                    <Task task={task} taskId={task._id} deleteTask={this.deleteTask}/>
                 </div>
             )
         })
