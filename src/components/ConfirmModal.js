@@ -12,7 +12,7 @@ function ConfirmModal(props) {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Are you sure you want do delete {props.taskscount} task{props.taskscount > 1 ? 's' : ''}?
+                    Are you sure you want do delete {props.tasksCount} task{props.tasksCount > 1 ? 's' : ''}?
                 </Modal.Title>
             </Modal.Header>
             <Modal.Footer className="justify-content-center">
@@ -24,7 +24,7 @@ function ConfirmModal(props) {
 }
 
 ConfirmModal.propTypes = {
-    taskscount: PropTypes.number.isRequired,
+    tasksCount: PropTypes.number.isRequired,
     onAccept: PropTypes.func.isRequired,
     onHide: PropTypes.func.isRequired,
 };

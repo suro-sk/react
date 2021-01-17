@@ -13,7 +13,7 @@ class Task extends Component {
                 <Card.Body>
                     <Form.Group controlId={this.props.taskId}>
                         <Form.Check type="checkbox" label="Mark"
-                                    onChange={() => this.props.inputchange(this.props.taskId)}/>
+                                    onChange={() => this.props.inputChange(this.props.taskId)}/>
                     </Form.Group>
                     <Button variant="danger" className="delete" onClick={() => this.props.deleteTask(this.props.taskId)}
                             disabled={this.props.buttonDisabled}>Delete Task</Button>
@@ -30,7 +30,7 @@ Task.propTypes = {
     task: PropTypes.object.isRequired,
     taskId: PropTypes.string.isRequired,
     deleteTask: PropTypes.func.isRequired,
-    inputchange: PropTypes.func.isRequired,
+    inputChange: PropTypes.func.isRequired,
     buttonDisabled: PropTypes.bool.isRequired,
 }
 

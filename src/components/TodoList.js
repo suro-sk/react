@@ -83,7 +83,7 @@ export default class TodoList extends Component {
                         task={task}
                         taskId={task._id}
                         deleteTask={this.deleteTask}
-                        inputchange={this.handleCheckboxChange}
+                        inputChange={this.handleCheckboxChange}
                         buttonDisabled={!!this.state.selectedTasks.size}
                     />
                 </div>
@@ -120,7 +120,7 @@ export default class TodoList extends Component {
                 {
                     this.state.showDeleteModal &&
                     <ConfirmModal
-                        taskscount={this.state.selectedTasks.size}
+                        tasksCount={this.state.selectedTasks.size}
                         onAccept={this.handleBulkDelete}
                         onHide={this.handleModalToggle}
                     />
