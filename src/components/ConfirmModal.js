@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 function ConfirmModal(props) {
     return (
         <Modal
-            {...props}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
