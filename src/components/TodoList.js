@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Button from 'react-bootstrap/Button'
-
+import ConfirmModal from "./ConfirmModal";
 
 export default class TodoList extends Component {
 
@@ -13,6 +13,7 @@ export default class TodoList extends Component {
         inputValue: '',
         tasks: [],
         selectedTasks: new Set(),
+        showDeleteModal: false,
     }
 
     handleInputChange = e => {
@@ -63,7 +64,14 @@ export default class TodoList extends Component {
 
         this.setState({
             tasks: remainingTasks,
-            selectedTasks: new Set()
+            selectedTasks: new Set(),
+            showDeleteModal: false,
+        });
+    }
+
+    handleModalToggle = () => {
+        this.setState({
+            showDeleteModal: !this.state.showDeleteModal
         });
     }
 
@@ -103,12 +111,20 @@ export default class TodoList extends Component {
                     </InputGroup>
                 </Form>
                 <div className="row justify-content-center mb-5">
-                    <Button variant="danger" className="delete" onClick={this.handleBulkDelete}
+                    <Button variant="danger" className="delete" onClick={this.handleModalToggle}
                             disabled={!this.state.selectedTasks.size}>Delete
                         Selected Tasks</Button>
                 </div>
                 <div
                     className="tasks-area row">{generatedTasks.length ? generatedTasks : noTasks}</div>
+                {
+                    this.state.showDeleteModal &&
+                    <ConfirmModal
+                        taskscount={this.state.selectedTasks.size}
+                        onAccept={this.handleBulkDelete}
+                        onHide={this.handleModalToggle}
+                    />
+                }
             </div>
         )
     }
