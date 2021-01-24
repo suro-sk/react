@@ -1,5 +1,4 @@
 import {Component} from 'react';
-import {v4 as uuidv4} from 'uuid';
 import Task from "./Task";
 import {Button, ButtonToolbar, ButtonGroup} from 'react-bootstrap';
 import ConfirmModal from "./ConfirmModal";
@@ -11,8 +10,6 @@ import {faPlus, faCheck, faTimes, faTrash} from '@fortawesome/free-solid-svg-ico
 export default class TodoList extends Component {
 
     state = {
-        title: '',
-        description: '',
         tasks: [],
         selectedTasks: new Set(),
         showDeleteModal: false,
@@ -26,23 +23,10 @@ export default class TodoList extends Component {
         })
     }
 
-    handleTaskCreating = (e) => {
-        e.preventDefault();
-        let upcomingTaskTitle = this.state.title.trim(),
-            upcomingTaskDescription = this.state.description.trim();
-        if (!upcomingTaskTitle) return;
-
-        let upcomingTask = {
-            title: upcomingTaskTitle,
-            description: upcomingTaskDescription,
-            _id: uuidv4(),
-        };
-
+    handleTaskCreating = (upcomingTask) => {
         this.setState({
             tasks: [...this.state.tasks, upcomingTask],
             showTaskCreateModal: false,
-            title: '',
-            description: ''
         })
     }
 

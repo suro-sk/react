@@ -1,10 +1,38 @@
 import React, {Component} from 'react';
 import {Modal, Button, FormControl, Form} from 'react-bootstrap'
 import PropTypes from 'prop-types';
+import {v4 as uuidv4} from "uuid";
 
 class TaskCreateModal extends Component {
+
+    state = {
+        title: '',
+        description: ''
+    }
+
+    handleInputChange = e => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    handleTaskAdding = (e) => {
+        e.preventDefault();
+        let upcomingTaskTitle = this.state.title.trim(),
+            upcomingTaskDescription = this.state.description.trim();
+        if (!upcomingTaskTitle) return;
+
+        let upcomingTask = {
+            title: upcomingTaskTitle,
+            description: upcomingTaskDescription,
+            _id: uuidv4(),
+        };
+
+        this.props.onAccept(upcomingTask);
+    }
+
     render() {
-        const {onHide, onInputChange, onAccept} = this.props
+        const {onHide} = this.props
         return (
             <Modal
                 onHide={onHide}
@@ -19,7 +47,7 @@ class TaskCreateModal extends Component {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={onAccept}>
+                    <Form onSubmit={this.handleTaskAdding}>
 
                         <Form.Group>
                             <FormControl
@@ -27,7 +55,7 @@ class TaskCreateModal extends Component {
                                 aria-label="Add Your Task"
                                 aria-describedby="basic-addon2"
                                 name="title"
-                                onChange={onInputChange}
+                                onChange={this.handleInputChange}
                             />
                         </Form.Group>
                         <Form.Group>
@@ -35,13 +63,13 @@ class TaskCreateModal extends Component {
                                 placeholder="Task Description"
                                 name="description"
                                 as="textarea"
-                                onChange={onInputChange}
+                                onChange={this.handleInputChange}
                                 rows={4}/>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer className="justify-content-center">
-                    <Button variant="success" onClick={onAccept}>Create</Button>
+                    <Button variant="success" onClick={this.handleTaskAdding}>Create</Button>
                     <Button variant="danger" onClick={onHide}>Cancel</Button>
                 </Modal.Footer>
             </Modal>
