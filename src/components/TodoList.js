@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import {PureComponent } from 'react';
 import Task from "./Task";
 import {Button, ButtonToolbar, ButtonGroup} from 'react-bootstrap';
 import ConfirmModal from "./ConfirmModal";
@@ -7,7 +7,7 @@ import TaskEditModal from "./TaskEditModal";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlus, faCheck, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
 
-export default class TodoList extends Component {
+export default class TodoList extends PureComponent  {
 
     state = {
         tasks: [],

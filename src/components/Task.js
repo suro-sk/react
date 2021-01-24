@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import {PureComponent } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faEdit} from "@fortawesome/free-solid-svg-icons";
 
-class Task extends Component {
+class Task extends PureComponent  {
 
     render() {
         const {onEdit, task, deleteTask, buttonDisabled, selected} = this.props;

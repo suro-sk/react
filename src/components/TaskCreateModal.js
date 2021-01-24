@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, {PureComponent } from 'react';
 import {Modal, Button, FormControl, Form} from 'react-bootstrap'
 import PropTypes from 'prop-types';
 import {v4 as uuidv4} from "uuid";
 
-class TaskCreateModal extends Component {
+class TaskCreateModal extends PureComponent  {
 
     state = {
         title: '',
