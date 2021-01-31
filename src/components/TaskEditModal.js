@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, {PureComponent } from 'react';
 import {Modal, Button, FormControl, Form} from 'react-bootstrap'
 import PropTypes from 'prop-types';
 
-class TaskEditModal extends Component {
+class TaskEditModal extends PureComponent  {
 
     constructor(props) {
         super(props);
