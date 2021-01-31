@@ -1,39 +1,32 @@
 import {Component} from 'react';
-import {v4 as uuidv4} from 'uuid';
 import Task from "./Task";
-import Form from 'react-bootstrap/Form'
-import FormControl from 'react-bootstrap/FormControl'
-import InputGroup from 'react-bootstrap/InputGroup'
-import Button from 'react-bootstrap/Button'
+import {Button, ButtonToolbar, ButtonGroup} from 'react-bootstrap';
 import ConfirmModal from "./ConfirmModal";
+import TaskCreateModal from "./TaskCreateModal";
+import TaskEditModal from "./TaskEditModal";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPlus, faCheck, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
 
 export default class TodoList extends Component {
 
     state = {
-        inputValue: '',
         tasks: [],
         selectedTasks: new Set(),
         showDeleteModal: false,
+        showTaskCreateModal: false,
+        currentEditing: null,
     }
 
     handleInputChange = e => {
         this.setState({
-            inputValue: e.target.value
+            [e.target.name]: e.target.value
         })
     }
 
-    handleTaskCreating = (e) => {
-        e.preventDefault();
-        let upcomingTaskTitle = this.state.inputValue.trim();
-        if (!upcomingTaskTitle) return;
-        let upcomingTask = {
-            title: upcomingTaskTitle,
-            _id: uuidv4()
-        };
-
+    handleTaskCreating = (upcomingTask) => {
         this.setState({
             tasks: [...this.state.tasks, upcomingTask],
-            inputValue: ''
+            showTaskCreateModal: false,
         })
     }
 
@@ -56,6 +49,19 @@ export default class TodoList extends Component {
         })
     }
 
+    handleSelectAll = () => {
+        const allTasksIds = this.state.tasks.map(task => task._id);
+        this.setState({
+            selectedTasks: new Set(allTasksIds)
+        })
+    }
+
+    handleUnselectAll = () => {
+        this.setState({
+            selectedTasks: new Set()
+        })
+    }
+
     handleBulkDelete = () => {
         const {selectedTasks, tasks} = this.state;
         const remainingTasks = tasks.filter(task => {
@@ -69,11 +75,34 @@ export default class TodoList extends Component {
         });
     }
 
-    handleModalToggle = () => {
+    handleEdit = (task)=>{
+        this.setState({
+            currentEditing: task
+        });
+    };
+
+    handleDeleteModalToggle = () => {
         this.setState({
             showDeleteModal: !this.state.showDeleteModal
         });
     }
+
+    handleTaskCreateModalToggle = () => {
+        this.setState({
+            showTaskCreateModal: !this.state.showTaskCreateModal
+        });
+    }
+
+    handleTaskSave = (task)=>{
+        const tasks = [...this.state.tasks];
+        const idx = tasks.findIndex((thisTask)=> thisTask._id === task._id);
+        tasks[idx] = task;
+
+        this.setState({
+            tasks,
+            currentEditing: null
+        });
+    };
 
     render() {
         const generatedTasks = this.state.tasks.map((task) => {
@@ -81,39 +110,56 @@ export default class TodoList extends Component {
                 <div key={task._id} className="col-xl-3 col-lg-4 col-md-6 task">
                     <Task
                         task={task}
-                        taskId={task._id}
                         deleteTask={this.deleteTask}
                         inputChange={this.handleCheckboxChange}
                         buttonDisabled={!!this.state.selectedTasks.size}
+                        selected={this.state.selectedTasks.has(task._id)}
+                        onEdit={this.handleEdit}
                     />
                 </div>
             )
         })
         const noTasks = <p className="mx-auto">You have not created any task yet.</p>
-
+        const {selectedTasks, tasks} = this.state;
         return (
 
             <div className="todo-list">
 
-                <Form className="controls-area" onSubmit={this.handleTaskCreating}>
-
-                    <InputGroup className="mb-4">
-                        <FormControl
-                            placeholder="Add Your Task"
-                            aria-label="Add Your Task"
-                            aria-describedby="basic-addon2"
-                            value={this.state.inputValue}
-                            onChange={this.handleInputChange}
-                        />
-                        <InputGroup.Append>
-                            <Button type="submit" variant="outline-secondary">Add Task</Button>
-                        </InputGroup.Append>
-                    </InputGroup>
-                </Form>
                 <div className="row justify-content-center mb-5">
-                    <Button variant="danger" className="delete" onClick={this.handleModalToggle}
-                            disabled={!this.state.selectedTasks.size}>Delete
-                        Selected Tasks</Button>
+                    <ButtonToolbar>
+                        <ButtonGroup aria-label="First group">
+                            <Button
+                                variant="success"
+                                className="mr-2"
+                                onClick={this.handleTaskCreateModalToggle}>
+                                <FontAwesomeIcon className="mr-1" icon={faPlus}/>
+                                Add Task
+                            </Button>
+                            <Button
+                                variant="primary"
+                                className="mr-2"
+                                onClick={this.handleSelectAll}
+                                disabled={!tasks.length}>
+                                <FontAwesomeIcon className="mr-1" icon={faCheck}/>
+                                Mark All
+                            </Button>
+                            <Button
+                                variant="primary"
+                                className="mr-2"
+                                onClick={this.handleUnselectAll}
+                                disabled={!tasks.length}>
+                                <FontAwesomeIcon className="mr-1" icon={faTimes}/>
+                                Unmark All
+                            </Button>
+                            <Button
+                                variant="danger"
+                                onClick={this.handleDeleteModalToggle}
+                                disabled={!selectedTasks.size}>
+                                <FontAwesomeIcon className="mr-1" icon={faTrash}/>
+                                Delete Selected
+                            </Button>
+                        </ButtonGroup>
+                    </ButtonToolbar>
                 </div>
                 <div
                     className="tasks-area row">{generatedTasks.length ? generatedTasks : noTasks}</div>
@@ -122,7 +168,24 @@ export default class TodoList extends Component {
                     <ConfirmModal
                         tasksCount={this.state.selectedTasks.size}
                         onAccept={this.handleBulkDelete}
-                        onHide={this.handleModalToggle}
+                        onHide={this.handleDeleteModalToggle}
+                    />
+
+                }
+                {
+                    this.state.showTaskCreateModal &&
+                    <TaskCreateModal
+                        onAccept={this.handleTaskCreating}
+                        onHide={this.handleTaskCreateModalToggle}
+                        onInputChange={this.handleInputChange}
+                    />
+                }
+                {
+                    this.state.currentEditing &&
+                    <TaskEditModal
+                        task={this.state.currentEditing}
+                        onAccept={this.handleTaskSave}
+                        onHide={()=>this.handleEdit(null)}
                     />
                 }
             </div>
