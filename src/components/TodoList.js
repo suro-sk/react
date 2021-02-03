@@ -6,6 +6,7 @@ import TaskCreateModal from "./TaskCreateModal";
 import TaskEditModal from "./TaskEditModal";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlus, faCheck, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {formatDate} from "../helpers/functions";
 
 export default class TodoList extends PureComponent {
 
@@ -168,7 +169,8 @@ export default class TodoList extends PureComponent {
             method: 'PUT',
             body: JSON.stringify({
                 title: task.title,
-                description: task.description
+                description: task.description,
+                date: formatDate(task.date.toISOString())
             }),
             headers: {
                 'Content-type': 'application/json'

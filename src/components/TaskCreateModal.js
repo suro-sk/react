@@ -1,5 +1,8 @@
 import React, {PureComponent} from 'react';
 import {Modal, Button, FormControl, Form, Spinner} from 'react-bootstrap'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import {formatDate} from '../helpers/functions';
 import PropTypes from 'prop-types';
 
 class TaskCreateModal extends PureComponent {
@@ -7,7 +10,8 @@ class TaskCreateModal extends PureComponent {
     state = {
         title: '',
         description: '',
-        isLoading: false
+        isLoading: false,
+        date: new Date()
     }
 
     handleInputChange = e => {
@@ -25,11 +29,18 @@ class TaskCreateModal extends PureComponent {
         let upcomingTask = {
             title: upcomingTaskTitle,
             description: upcomingTaskDescription,
+            date: formatDate(this.state.date.toISOString())
         };
         this.setState({
             isLoading: true
         })
         this.props.onAccept(upcomingTask);
+    }
+
+    handleDateChange = (val) => {
+        this.setState({
+            date: val || new Date()
+        })
     }
 
     render() {
@@ -66,6 +77,14 @@ class TaskCreateModal extends PureComponent {
                                 as="textarea"
                                 onChange={this.handleInputChange}
                                 rows={4}/>
+                        </Form.Group>
+                        <Form.Group>
+                            <DatePicker
+                                className="form-control"
+                                minDate = {new Date()}
+                                selected={this.state.date}
+                                onChange={this.handleDateChange}
+                            />
                         </Form.Group>
                     </Form>
                 </Modal.Body>

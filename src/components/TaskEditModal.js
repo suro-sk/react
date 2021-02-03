@@ -1,13 +1,15 @@
 import React, {PureComponent } from 'react';
 import {Modal, Button, FormControl, Form} from 'react-bootstrap'
 import PropTypes from 'prop-types';
+import DatePicker from "react-datepicker";
 
 class TaskEditModal extends PureComponent  {
 
     constructor(props) {
         super(props);
         this.state = {
-            ...props.task
+            ...props.task,
+            date: props.task.date ? new Date(props.task.date) : new Date()
         }
     }
 
@@ -31,7 +33,8 @@ class TaskEditModal extends PureComponent  {
         this.props.onAccept({
             _id: this.state._id,
             title,
-            description
+            description,
+            date: this.state.date
         });
     };
 
@@ -71,6 +74,14 @@ class TaskEditModal extends PureComponent  {
                                 value={this.state.description}
                                 onChange={this.handleChange}
                                 rows={4}/>
+                        </Form.Group>
+                        <Form.Group>
+                            <DatePicker
+                                className="form-control"
+                                minDate = {new Date()}
+                                selected={this.state.date}
+                                onChange={this.handleDateChange}
+                            />
                         </Form.Group>
                     </Form>
                 </Modal.Body>

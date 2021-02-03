@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import PropTypes from 'prop-types';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faEdit} from "@fortawesome/free-solid-svg-icons";
+import {formatDate} from '../helpers/functions';
 
 class Task extends PureComponent  {
 
@@ -16,13 +17,20 @@ class Task extends PureComponent  {
                     <Form.Group controlId={task._id} className="mb-0">
                         <Form.Check
                             type="checkbox"
-                            label={task.title}
+
                             checked={selected}
                             onChange={() => this.props.inputChange(task._id)}
                         />
                     </Form.Group>
+                    <Card.Title>
+                        {task.title}
+                    </Card.Title>
                 </Card.Header>
                 <Card.Body>
+                    <p>
+                        <strong>Date: </strong>
+                        <time>{formatDate(task.date) || "Not Available"}</time>
+                    </p>
                     {task.description}
                 </Card.Body>
                 <Card.Footer>
