@@ -21,13 +21,7 @@ function App() {
     return (
         <div className="App">
             <Router>
-                <Header>
-                    <Link to="/" className="navbar-brand">ToDo List</Link>
-                    <Nav className="ml-auto">
-                        <Link to="/about-us" className="nav-link">About Us</Link>
-                        <Link to="/contact-us" className="nav-link">Contact Us</Link>
-                    </Nav>
-                </Header>
+                <Header/>
                 <div className="container page-holder">
                     <Switch>
                         <Route
