@@ -1,6 +1,5 @@
 import TodoList from "./components/pages/TodoList/TodoList";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Nav} from 'react-bootstrap';
 import './App.scss';
 import Header from "./components/Header";
 import About from "./components/pages/About/About";
@@ -11,8 +10,7 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Redirect,
-    Link
+    Redirect
 } from "react-router-dom";
 import Footer from "./components/Footer";
 import React from "react";
@@ -26,29 +24,29 @@ function App() {
                     <Switch>
                         <Route
                             path="/"
-                            exact>
-                            <TodoList/>
-                        </Route>
+                            exact
+                            component={TodoList}
+                        />
                         <Route
                             path="/task/:id"
-                            exact>
-                            <SingleTask/>
-                        </Route>
+                            exact
+                            component={SingleTask}
+                        />
                         <Route
                             path="/about-us"
-                            exact>
-                            <About/>
-                        </Route>
+                            exact
+                            component={About}
+                        />
                         <Route
                             path="/contact-us"
-                            exact>
-                            <Contact/>
-                        </Route>
+                            exact
+                            component={Contact}
+                        />
                         <Route
                             path="/not-found"
-                            exact>
-                            <NotFound/>
-                        </Route>
+                            exact
+                            component={NotFound}
+                        />
 
                         <Redirect to="/not-found"/>
                     </Switch>
