@@ -1,4 +1,4 @@
-import {PureComponent } from 'react';
+import {PureComponent} from 'react';
 import Task from "./Task";
 import {Button, ButtonToolbar, ButtonGroup} from 'react-bootstrap';
 import ConfirmModal from "./ConfirmModal";
@@ -7,7 +7,7 @@ import TaskEditModal from "./TaskEditModal";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlus, faCheck, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
 
-export default class TodoList extends PureComponent  {
+export default class TodoList extends PureComponent {
 
     state = {
         tasks: [],
@@ -24,20 +24,64 @@ export default class TodoList extends PureComponent  {
     }
 
     handleTaskCreating = (upcomingTask) => {
-        this.setState({
-            tasks: [...this.state.tasks, upcomingTask],
-            showTaskCreateModal: false,
+        fetch('http://localhost:3001/task', {
+            method: 'POST',
+            body: JSON.stringify(upcomingTask),
+            headers: {
+                'Content-type': 'application/json'
+            }
         })
+            .then(async (res) => {
+                if (res.status >= 400 && res.status < 600) {
+                    if (res.error) {
+                        throw res.error;
+                    } else {
+                        throw new Error('Something went wrong')
+                    }
+                }
+                const task = await res.json()
+
+                this.setState({
+                    tasks: [...this.state.tasks, task],
+                    showTaskCreateModal: false,
+                })
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+
+
     }
 
     deleteTask = (taskId) => {
-        const remainingTasks = this.state.tasks.filter((task) => {
-            return taskId !== task._id
-        });
-
-        this.setState({
-            tasks: remainingTasks
+        fetch(`http://localhost:3001/task/${taskId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json'
+            }
         })
+            .then((res) => {
+                if (res.status >= 400 && res.status < 600) {
+                    if (res.error) {
+                        throw res.error;
+                    } else {
+                        throw new Error('Something went wrong')
+                    }
+                }
+
+                const remainingTasks = this.state.tasks.filter((task) => {
+                    return taskId !== task._id
+                });
+
+                this.setState({
+                    tasks: remainingTasks
+                })
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+
+
     }
 
     handleCheckboxChange = (taskId) => {
@@ -64,18 +108,43 @@ export default class TodoList extends PureComponent  {
 
     handleBulkDelete = () => {
         const {selectedTasks, tasks} = this.state;
-        const remainingTasks = tasks.filter(task => {
-            return !selectedTasks.has(task._id);
-        })
 
-        this.setState({
-            tasks: remainingTasks,
-            selectedTasks: new Set(),
-            showDeleteModal: false,
-        });
+        fetch('http://localhost:3001/task', {
+            method: 'PATCH',
+            body: JSON.stringify({
+                tasks: [...selectedTasks]
+            }),
+            headers: {
+                'Content-type': 'application/json'
+            }
+        })
+            .then(async (res) => {
+                if (res.status >= 400 && res.status < 600) {
+                    if (res.error) {
+                        throw res.error;
+                    } else {
+                        throw new Error('Something went wrong')
+                    }
+                }
+
+                const remainingTasks = tasks.filter(task => {
+                    return !selectedTasks.has(task._id);
+                })
+
+                this.setState({
+                    tasks: remainingTasks,
+                    selectedTasks: new Set(),
+                    showDeleteModal: false,
+                });
+
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+
     }
 
-    handleEdit = (task)=>{
+    handleEdit = (task) => {
         this.setState({
             currentEditing: task
         });
@@ -93,16 +162,68 @@ export default class TodoList extends PureComponent  {
         });
     }
 
-    handleTaskSave = (task)=>{
-        const tasks = [...this.state.tasks];
-        const idx = tasks.findIndex((thisTask)=> thisTask._id === task._id);
-        tasks[idx] = task;
+    handleTaskSave = (task) => {
 
-        this.setState({
-            tasks,
-            currentEditing: null
-        });
+        fetch(`http://localhost:3001/task/${task._id}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                title: task.title,
+                description: task.description
+            }),
+            headers: {
+                'Content-type': 'application/json'
+            }
+        })
+            .then(async (res) => {
+                if (res.status >= 400 && res.status < 600) {
+                    if (res.error) {
+                        throw res.error;
+                    } else {
+                        throw new Error('Something went wrong')
+                    }
+                }
+                const task = await res.json()
+
+                const tasks = [...this.state.tasks];
+                const idx = tasks.findIndex((thisTask) => thisTask._id === task._id);
+                tasks[idx] = task;
+
+                this.setState({
+                    tasks,
+                    currentEditing: null
+                });
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+
     };
+
+    componentDidMount() {
+        fetch('http://localhost:3001/task', {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        })
+            .then(async (res) => {
+                if (res.status >= 400 && res.status < 600) {
+                    if (res.error) {
+                        throw res.error;
+                    } else {
+                        throw new Error('Something went wrong')
+                    }
+                }
+
+                const tasks = await res.json()
+                this.setState({
+                    tasks
+                })
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    }
 
     render() {
         const generatedTasks = this.state.tasks.map((task) => {
@@ -185,7 +306,7 @@ export default class TodoList extends PureComponent  {
                     <TaskEditModal
                         task={this.state.currentEditing}
                         onAccept={this.handleTaskSave}
-                        onHide={()=>this.handleEdit(null)}
+                        onHide={() => this.handleEdit(null)}
                     />
                 }
             </div>

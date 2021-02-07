@@ -1,13 +1,13 @@
-import React, {PureComponent } from 'react';
-import {Modal, Button, FormControl, Form} from 'react-bootstrap'
+import React, {PureComponent} from 'react';
+import {Modal, Button, FormControl, Form, Spinner} from 'react-bootstrap'
 import PropTypes from 'prop-types';
-import {v4 as uuidv4} from "uuid";
 
-class TaskCreateModal extends PureComponent  {
+class TaskCreateModal extends PureComponent {
 
     state = {
         title: '',
-        description: ''
+        description: '',
+        isLoading: false
     }
 
     handleInputChange = e => {
@@ -25,9 +25,10 @@ class TaskCreateModal extends PureComponent  {
         let upcomingTask = {
             title: upcomingTaskTitle,
             description: upcomingTaskDescription,
-            _id: uuidv4(),
         };
-
+        this.setState({
+            isLoading: true
+        })
         this.props.onAccept(upcomingTask);
     }
 
@@ -69,7 +70,8 @@ class TaskCreateModal extends PureComponent  {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer className="justify-content-center">
-                    <Button variant="success" onClick={this.handleTaskAdding}>Create</Button>
+                    <Button variant="success" onClick={this.handleTaskAdding}>{this.state.isLoading ?
+                        <Spinner animation="border" variant="light" size="sm"/> : 'Create'}</Button>
                     <Button variant="danger" onClick={onHide}>Cancel</Button>
                 </Modal.Footer>
             </Modal>
