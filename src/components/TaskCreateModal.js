@@ -60,7 +60,6 @@ class TaskCreateModal extends PureComponent {
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={this.handleTaskAdding}>
-
                         <Form.Group>
                             <FormControl
                                 placeholder="Task Name"
