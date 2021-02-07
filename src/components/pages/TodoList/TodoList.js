@@ -1,12 +1,12 @@
 import {PureComponent} from 'react';
-import Task from "./Task";
+import Task from "../../Task";
 import {Button, ButtonToolbar, ButtonGroup} from 'react-bootstrap';
-import ConfirmModal from "./ConfirmModal";
-import TaskCreateModal from "./TaskCreateModal";
-import TaskEditModal from "./TaskEditModal";
+import ConfirmModal from "../../ConfirmModal";
+import TaskCreateModal from "../../TaskCreateModal";
+import TaskEditModal from "../../TaskEditModal";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlus, faCheck, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
-import {formatDate} from "../helpers/functions";
+import {formatDate} from "../../../helpers/functions";
 
 export default class TodoList extends PureComponent {
 
