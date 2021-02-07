@@ -1,11 +1,12 @@
-import {PureComponent } from 'react';
+import React, {PureComponent } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import PropTypes from 'prop-types';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faEdit} from "@fortawesome/free-solid-svg-icons";
-import {formatDate} from '../helpers/functions';
+import {formatDate, truncateString} from '../helpers/functions';
+import {Link} from "react-router-dom";
 
 class Task extends PureComponent  {
 
@@ -17,13 +18,15 @@ class Task extends PureComponent  {
                     <Form.Group controlId={task._id} className="mb-0">
                         <Form.Check
                             type="checkbox"
-
                             checked={selected}
                             onChange={() => this.props.inputChange(task._id)}
                         />
                     </Form.Group>
                     <Card.Title>
-                        {task.title}
+                        <Link
+                            className="text-dark"
+                            to={`/task/${task._id}`}
+                        >{task.title}</Link>
                     </Card.Title>
                 </Card.Header>
                 <Card.Body>
@@ -31,7 +34,7 @@ class Task extends PureComponent  {
                         <strong>Date: </strong>
                         <time>{formatDate(task.date) || "Not Available"}</time>
                     </p>
-                    {task.description}
+                    {truncateString(task.description, 74)}
                 </Card.Body>
                 <Card.Footer>
                     <Button

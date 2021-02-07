@@ -21,6 +21,12 @@ class TaskEditModal extends PureComponent  {
         });
     };
 
+    handleDateChange = (val) => {
+        this.setState({
+            date: val || new Date()
+        })
+    }
+
     handleTaskSave = (e)=>{
         e.preventDefault();
         const title = this.state.title.trim();
@@ -86,7 +92,7 @@ class TaskEditModal extends PureComponent  {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer className="justify-content-center">
-                    <Button variant="success" onClick={this.handleTaskSave}>Create</Button>
+                    <Button variant="success" onClick={this.handleTaskSave}>Save</Button>
                     <Button variant="danger" onClick={onHide}>Cancel</Button>
                 </Modal.Footer>
             </Modal>
