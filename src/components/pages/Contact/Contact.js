@@ -65,6 +65,7 @@ export default function Contact() {
                         name="name"
                         value={fieldsState.name}
                         onChange={handleFieldChange}
+                        required
                     />
                 </Form.Group>
                 <Form.Group controlId="email">
@@ -74,6 +75,7 @@ export default function Contact() {
                         name="email"
                         value={fieldsState.email}
                         onChange={handleFieldChange}
+                        required
                     />
                 </Form.Group>
                 <Form.Group controlId="message">
@@ -84,6 +86,7 @@ export default function Contact() {
                         rows={5}
                         value={fieldsState.message}
                         onChange={handleFieldChange}
+                        required
                     />
                 </Form.Group>
                 <Button variant="primary" type="submit">
