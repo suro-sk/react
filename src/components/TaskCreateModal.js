@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {PureComponent, createRef} from 'react';
 import {Modal, Button, FormControl, Form, Spinner} from 'react-bootstrap'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -7,11 +7,21 @@ import PropTypes from 'prop-types';
 
 class TaskCreateModal extends PureComponent {
 
-    state = {
-        title: '',
-        description: '',
-        isLoading: false,
-        date: new Date()
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            title: '',
+            description: '',
+            isLoading: false,
+            date: new Date()
+        }
+
+        this.titleInputRef = createRef();
+    }
+
+    componentDidMount() {
+        this.titleInputRef.current.focus()
     }
 
     handleInputChange = e => {
@@ -67,6 +77,7 @@ class TaskCreateModal extends PureComponent {
                                 aria-describedby="basic-addon2"
                                 name="title"
                                 onChange={this.handleInputChange}
+                                ref={this.titleInputRef}
                             />
                         </Form.Group>
                         <Form.Group>

@@ -1,9 +1,9 @@
-import React, {PureComponent } from 'react';
+import React, {PureComponent, createRef} from 'react';
 import {Modal, Button, FormControl, Form} from 'react-bootstrap'
 import PropTypes from 'prop-types';
 import DatePicker from "react-datepicker";
 
-class TaskEditModal extends PureComponent  {
+class TaskEditModal extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -11,6 +11,12 @@ class TaskEditModal extends PureComponent  {
             ...props.task,
             date: props.task.date ? new Date(props.task.date) : new Date()
         }
+
+        this.titleInputRef = createRef();
+    }
+
+    componentDidMount() {
+        this.titleInputRef.current.focus();
     }
 
     handleChange = (event) => {
@@ -27,7 +33,7 @@ class TaskEditModal extends PureComponent  {
         })
     }
 
-    handleTaskSave = (e)=>{
+    handleTaskSave = (e) => {
         e.preventDefault();
         const title = this.state.title.trim();
         const description = this.state.description.trim();
@@ -70,6 +76,7 @@ class TaskEditModal extends PureComponent  {
                                 name="title"
                                 onChange={this.handleChange}
                                 value={this.state.title}
+                                ref={this.titleInputRef}
                             />
                         </Form.Group>
                         <Form.Group>
@@ -84,7 +91,7 @@ class TaskEditModal extends PureComponent  {
                         <Form.Group>
                             <DatePicker
                                 className="form-control"
-                                minDate = {new Date()}
+                                minDate={new Date()}
                                 selected={this.state.date}
                                 onChange={this.handleDateChange}
                             />
