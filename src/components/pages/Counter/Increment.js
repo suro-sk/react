@@ -8,12 +8,12 @@ function Increment(props) {
     )
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onPlusButton: () => {
-            dispatch({ type: 'INCREMENT_COUNT' });
+const mapDispatchToProps = {
+    onPlusButton: () => {
+        return (dispatch) => {
+            dispatch({type: 'INCREMENT_COUNT'});
         }
-    };
+    }
 };
 
 export default connect(null, mapDispatchToProps)(Increment);

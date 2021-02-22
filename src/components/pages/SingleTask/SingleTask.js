@@ -4,6 +4,8 @@ import {formatDate} from '../../../helpers/functions'
 import {Button, ButtonToolbar} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faEdit} from "@fortawesome/free-solid-svg-icons";
+import makeRequest from "../../../helpers/makeRequest";
+
 
 export default class SingleTask extends PureComponent {
     state = {
@@ -13,24 +15,12 @@ export default class SingleTask extends PureComponent {
 
     componentDidMount() {
         const taskId = this.props.match.params.id
-        fetch(`http://localhost:3001/task/${taskId}`)
-            .then(async (res) => {
-                if (res.status >= 400 && res.status < 600) {
-                    if (res.error) {
-                        throw res.error;
-                    } else {
-                        throw new Error('Something went wrong')
-                    }
-                }
-                const task = await res.json()
-
+        makeRequest(`http://localhost:3001/task/${taskId}`)
+            .then((task) => {
                 this.setState({
                     task
                 })
             })
-            .catch((e) => {
-                console.log(e);
-            });
     }
 
     toggleEditModal = () => {
@@ -40,63 +30,28 @@ export default class SingleTask extends PureComponent {
     }
 
     handleTaskSave = (task) => {
-
-        fetch(`http://localhost:3001/task/${task._id}`, {
-            method: 'PUT',
-            body: JSON.stringify({
-                title: task.title,
-                description: task.description,
-                date: formatDate(task.date.toISOString())
-            }),
-            headers: {
-                'Content-type': 'application/json'
-            }
+        makeRequest(`http://localhost:3001/task/${task._id}`, 'PUT', {
+            title: task.title,
+            description: task.description,
+            date: formatDate(task.date.toISOString())
         })
-            .then(async (res) => {
-                if (res.status >= 400 && res.status < 600) {
-                    if (res.error) {
-                        throw res.error;
-                    } else {
-                        throw new Error('Something went wrong')
-                    }
-                }
-                const task = await res.json()
-
+            .then((task) => {
+                console.log('task', task)
                 this.setState({
                     task,
                     isEditModalOpen: false
                 });
             })
-            .catch((e) => {
-                console.log(e);
-            });
+
 
     };
 
     handleTaskDelete = () => {
         const taskId = this.state.task._id
-        fetch(`http://localhost:3001/task/${taskId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-type': 'application/json'
-            }
-        })
-            .then((res) => {
-                if (res.status >= 400 && res.status < 600) {
-                    if (res.error) {
-                        throw res.error;
-                    } else {
-                        throw new Error('Something went wrong')
-                    }
-                }
-
+        makeRequest(`http://localhost:3001/task/${taskId}`, 'DELETE')
+            .then((task)=>{
                 this.props.history.push('/');
             })
-            .catch((e) => {
-                console.log(e);
-            });
-
-
     }
 
 

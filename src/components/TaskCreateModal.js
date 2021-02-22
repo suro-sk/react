@@ -4,6 +4,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {formatDate} from '../helpers/functions';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {addTask} from "./store/actions";
 
 class TaskCreateModal extends PureComponent {
 
@@ -44,7 +46,7 @@ class TaskCreateModal extends PureComponent {
         this.setState({
             isLoading: true
         })
-        this.props.onAccept(upcomingTask);
+        this.props.addTask(upcomingTask);
     }
 
     handleDateChange = (val) => {
@@ -114,4 +116,9 @@ TaskCreateModal.propTypes = {
     onHide: PropTypes.func.isRequired,
 };
 
-export default TaskCreateModal;
+const mapDispatchToProps = {
+    addTask
+};
+
+
+export default connect(null, mapDispatchToProps)(TaskCreateModal);

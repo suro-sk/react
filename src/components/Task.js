@@ -7,6 +7,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faEdit} from "@fortawesome/free-solid-svg-icons";
 import {formatDate, truncateString} from '../helpers/functions';
 import {Link} from "react-router-dom";
+import {connect} from 'react-redux';
+import {deleteTask} from "./store/actions";
 
 class Task extends PureComponent  {
 
@@ -48,7 +50,7 @@ class Task extends PureComponent  {
                     <Button
                         title="Delete"
                         variant="danger"
-                        onClick={() => deleteTask(task._id)}
+                        onClick={() => this.props.deleteTask(task._id)}
                         disabled={buttonDisabled}>
                         <FontAwesomeIcon icon={faTrash}/>
                     </Button>
@@ -62,10 +64,14 @@ class Task extends PureComponent  {
 
 Task.propTypes = {
     task: PropTypes.object.isRequired,
-    deleteTask: PropTypes.func.isRequired,
     inputChange: PropTypes.func.isRequired,
     buttonDisabled: PropTypes.bool.isRequired,
     selected: PropTypes.bool.isRequired,
 }
 
-export default Task;
+
+const mapDispatchToProps = {
+    deleteTask
+};
+
+export default connect(null, mapDispatchToProps)(Task);
