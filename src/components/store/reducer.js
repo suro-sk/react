@@ -1,6 +1,9 @@
+import * as actionTypes from './actionTypes';
+
 const defaultState = {
     count: 0,
     tasks: [],
+    task: null,
     taskAdded: false,
     taskEdited: false,
     tasksDeleted: false
@@ -9,45 +12,59 @@ const defaultState = {
 export default function reducer(state = defaultState, action) {
 
     switch (action.type) {
-        case 'FETCH_TASKS': {
+        case actionTypes.FETCH_TASKS: {
             return {
                 ...state,
                 tasks: action.tasks
             }
         }
-        case 'ADD_TASK': {
+        case actionTypes.FETCH_TASK: {
+            return {
+                ...state,
+                task: action.task
+            }
+        }
+        case actionTypes.ADD_TASK: {
             return {
                 ...state,
                 tasks: [...state.tasks, action.task],
                 taskAdded: true
             }
         }
-        case 'ADDING_TASK': {
+        case actionTypes.ADDING_TASK: {
             return {
                 ...state,
                 taskAdded: false
             }
         }
-        case 'SAVE_TASK': {
-            console.log('aaaaa',action.task)
+        case actionTypes.SAVE_TASK: {
             const task = action.task;
-            const tasks = [...state.tasks];
-            const idx = tasks.findIndex((thisTask) => thisTask._id === task._id);
-            tasks[idx] = task;
+            if (action.isSingle) {
 
-            return {
-                ...state,
-                tasks,
-                taskEdited: true
+                return {
+                    ...state,
+                    task,
+                    taskEdited: true
+                }
+            } else {
+                const tasks = [...state.tasks];
+                const idx = tasks.findIndex((thisTask) => thisTask._id === task._id);
+                tasks[idx] = task;
+
+                return {
+                    ...state,
+                    tasks,
+                    taskEdited: true
+                }
             }
         }
-        case 'SAVING_TASK': {
+        case actionTypes.SAVING_TASK: {
             return {
                 ...state,
                 taskEdited: false
             }
         }
-        case 'DELETE_TASK': {
+        case actionTypes.DELETE_TASK: {
             const remainingTasks = state.tasks.filter((task) => {
                 return action.taskId !== task._id
             });
@@ -55,10 +72,10 @@ export default function reducer(state = defaultState, action) {
             return {
                 ...state,
                 tasks: remainingTasks,
+                task: null,
             }
         }
-        case 'DELETE_TASKS': {
-            console.log('aaaa', action)
+        case actionTypes.DELETE_TASKS: {
             const remainingTasks = state.tasks.filter(task => {
                 return !action.tasks.has(task._id);
             })
@@ -69,12 +86,12 @@ export default function reducer(state = defaultState, action) {
                 tasksDeleted: true
             }
         }
-        case 'INCREMENT_COUNT':
+        case actionTypes.INCREMENT_COUNT:
             return {
                 ...state,
                 count: state.count + 1
             }
-        case 'DECREMENT_COUNT':
+        case actionTypes.DECREMENT_COUNT:
             return {
                 ...state,
                 count: state.count - 1

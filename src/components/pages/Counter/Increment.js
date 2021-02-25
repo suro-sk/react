@@ -1,6 +1,7 @@
 import React from "react";
 import {connect} from 'react-redux';
 import {Button} from 'react-bootstrap';
+import * as actionTypes from '../../store/actionTypes';
 
 function Increment(props) {
     return (
@@ -11,7 +12,7 @@ function Increment(props) {
 const mapDispatchToProps = {
     onPlusButton: () => {
         return (dispatch) => {
-            dispatch({type: 'INCREMENT_COUNT'});
+            dispatch({type: actionTypes.INCREMENT_COUNT});
         }
     }
 };
