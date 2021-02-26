@@ -6,37 +6,49 @@ const defaultState = {
     task: null,
     taskAdded: false,
     taskEdited: false,
-    tasksDeleted: false
+    tasksDeleted: false,
+    loading: false,
+    successMsg: null,
+    errorMsg: null,
 };
 
 export default function reducer(state = defaultState, action) {
 
     switch (action.type) {
+        case actionTypes.PENDING: {
+            return {
+                ...state,
+                loading: true,
+                taskAdded: false,
+                taskEdited: false,
+                tasksDeleted: false,
+                successMsg: null,
+                errorMsg: null,
+            };
+        }
         case actionTypes.FETCH_TASKS: {
             return {
                 ...state,
-                tasks: action.tasks
+                tasks: action.tasks,
+                loading: false
             }
         }
         case actionTypes.FETCH_TASK: {
             return {
                 ...state,
-                task: action.task
+                task: action.task,
+                loading: false
             }
         }
         case actionTypes.ADD_TASK: {
             return {
                 ...state,
                 tasks: [...state.tasks, action.task],
+                loading: false,
                 taskAdded: true
             }
         }
-        case actionTypes.ADDING_TASK: {
-            return {
-                ...state,
-                taskAdded: false
-            }
-        }
+
         case actionTypes.SAVE_TASK: {
             const task = action.task;
             if (action.isSingle) {
@@ -44,7 +56,8 @@ export default function reducer(state = defaultState, action) {
                 return {
                     ...state,
                     task,
-                    taskEdited: true
+                    taskEdited: true,
+                    loading: false,
                 }
             } else {
                 const tasks = [...state.tasks];
@@ -54,16 +67,12 @@ export default function reducer(state = defaultState, action) {
                 return {
                     ...state,
                     tasks,
-                    taskEdited: true
+                    taskEdited: true,
+                    loading: false,
                 }
             }
         }
-        case actionTypes.SAVING_TASK: {
-            return {
-                ...state,
-                taskEdited: false
-            }
-        }
+
         case actionTypes.DELETE_TASK: {
             const remainingTasks = state.tasks.filter((task) => {
                 return action.taskId !== task._id
@@ -73,6 +82,7 @@ export default function reducer(state = defaultState, action) {
                 ...state,
                 tasks: remainingTasks,
                 task: null,
+                loading: false,
             }
         }
         case actionTypes.DELETE_TASKS: {
@@ -83,7 +93,8 @@ export default function reducer(state = defaultState, action) {
             return {
                 ...state,
                 tasks: remainingTasks,
-                tasksDeleted: true
+                tasksDeleted: true,
+                loading: false,
             }
         }
         case actionTypes.INCREMENT_COUNT:

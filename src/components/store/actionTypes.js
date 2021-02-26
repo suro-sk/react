@@ -1,3 +1,4 @@
+export const PENDING = 'PENDING';
 export const FETCH_TASKS = 'FETCH_TASKS';
 export const FETCH_TASK = 'FETCH_TASK';
 export const ADD_TASK = 'ADD_TASK';

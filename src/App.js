@@ -1,3 +1,4 @@
+import React from "react";
 import TodoList from "./components/pages/TodoList/TodoList";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
@@ -14,9 +15,10 @@ import {
     Redirect
 } from "react-router-dom";
 import Footer from "./components/Footer";
-import React from "react";
+import {connect} from 'react-redux';
+import Loader from "./components/Loader/Loader";
 
-function App() {
+function App(props) {
     return (
         <div className="App">
             <Router>
@@ -59,8 +61,17 @@ function App() {
                 </div>
                 <Footer/>
             </Router>
+            {props.loading && <Loader/>}
         </div>
     );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        loading: state.loading,
+        successMsg: state.successMsg,
+        errorMsg: state.errorMsg
+    };
+};
+
+export default connect(mapStateToProps)(App);

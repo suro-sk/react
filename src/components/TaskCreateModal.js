@@ -1,5 +1,5 @@
 import React, {PureComponent, createRef} from 'react';
-import {Modal, Button, FormControl, Form, Spinner} from 'react-bootstrap'
+import {Modal, Button, FormControl, Form} from 'react-bootstrap'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {formatDate} from '../helpers/functions';
@@ -15,7 +15,6 @@ class TaskCreateModal extends PureComponent {
         this.state = {
             title: '',
             description: '',
-            isLoading: false,
             date: new Date()
         }
 
@@ -101,8 +100,7 @@ class TaskCreateModal extends PureComponent {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer className="justify-content-center">
-                    <Button variant="success" onClick={this.handleTaskAdding}>{this.state.isLoading ?
-                        <Spinner animation="border" variant="light" size="sm"/> : 'Create'}</Button>
+                    <Button variant="success" onClick={this.handleTaskAdding}>Create</Button>
                     <Button variant="danger" onClick={onHide}>Cancel</Button>
                 </Modal.Footer>
             </Modal>

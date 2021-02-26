@@ -4,7 +4,6 @@ import {formatDate} from '../../../helpers/functions'
 import {Button, ButtonToolbar} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faEdit} from "@fortawesome/free-solid-svg-icons";
-import makeRequest from "../../../helpers/makeRequest";
 import {connect} from 'react-redux';
 import {deleteTask, getTask} from "../../store/actions";
 
@@ -20,7 +19,7 @@ class SingleTask extends PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        if (!prevProps.taskEdited && this.props.taskEdited){
+        if (!prevProps.taskEdited && this.props.taskEdited) {
             this.setState({
                 isEditModalOpen: false
             });
@@ -28,7 +27,7 @@ class SingleTask extends PureComponent {
             return;
         }
 
-        if (prevProps.task && !this.props.task){
+        if (prevProps.task && !this.props.task) {
             this.props.history.push('/');
         }
     }
@@ -49,41 +48,40 @@ class SingleTask extends PureComponent {
     render() {
         const {task} = this.props;
         return (
-            task ?
-                <div className="single-task text-center">
-                    <h1>{task.title}</h1>
-                    <p className="description">{task.description}</p>
-                    <p className="date">
-                        <strong>Date: </strong>
-                        <time>{formatDate(task.date)}</time>
-                    </p>
-                    <ButtonToolbar className="dflex justify-content-center">
-                        <Button
-                            className="mr-1"
-                            title="Edit"
-                            variant="primary"
-                            onClick={this.toggleEditModal}
-                        >
-                            <FontAwesomeIcon icon={faEdit}/>
-                        </Button>
-                        <Button
-                            title="Delete"
-                            variant="danger"
-                            onClick={this.handleTaskDelete}
-                        >
-                            <FontAwesomeIcon icon={faTrash}/>
-                        </Button>
-                    </ButtonToolbar>
-                    {
-                        this.state.isEditModalOpen &&
-                        <TaskEditModal
-                            task={this.props.task}
-                            isSingle
-                            onHide={this.toggleEditModal}
-                        />
-                    }
-                </div>
-                : 'Fetching'
+            task &&
+            <div className="single-task text-center">
+                <h1>{task.title}</h1>
+                <p className="description">{task.description}</p>
+                <p className="date">
+                    <strong>Date: </strong>
+                    <time>{formatDate(task.date)}</time>
+                </p>
+                <ButtonToolbar className="dflex justify-content-center">
+                    <Button
+                        className="mr-1"
+                        title="Edit"
+                        variant="primary"
+                        onClick={this.toggleEditModal}
+                    >
+                        <FontAwesomeIcon icon={faEdit}/>
+                    </Button>
+                    <Button
+                        title="Delete"
+                        variant="danger"
+                        onClick={this.handleTaskDelete}
+                    >
+                        <FontAwesomeIcon icon={faTrash}/>
+                    </Button>
+                </ButtonToolbar>
+                {
+                    this.state.isEditModalOpen &&
+                    <TaskEditModal
+                        task={this.props.task}
+                        isSingle
+                        onHide={this.toggleEditModal}
+                    />
+                }
+            </div>
         )
     }
 }
