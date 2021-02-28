@@ -110,7 +110,6 @@ class TaskCreateModal extends PureComponent {
 
 TaskCreateModal.propTypes = {
     onInputChange: PropTypes.func.isRequired,
-    onAccept: PropTypes.func.isRequired,
     onHide: PropTypes.func.isRequired,
 };
 

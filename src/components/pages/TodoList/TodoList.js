@@ -78,7 +78,7 @@ class TodoList extends Component {
     }
 
     handleBulkDelete = () => {
-        const {selectedTasks, tasks} = this.state;
+        const {selectedTasks} = this.state;
 
         this.props.deleteTasks(selectedTasks)
 

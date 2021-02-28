@@ -144,7 +144,7 @@ function Filters(props) {
                     {
                         orderOptions.map((option, idx) => {
                             if (option.isHeader) {
-                                return <Dropdown.Header>{option.label}</Dropdown.Header>
+                                return <Dropdown.Header key={idx}>{option.label}</Dropdown.Header>
                             } else {
                                 return <Dropdown.Item
                                     key={idx}
@@ -165,12 +165,11 @@ function Filters(props) {
             <Row className="justify-content-center mt-4">
 
                 {
-                    dateOptions.map((option, index) => (
-                        <Col>
+                    dateOptions.map((option, idx) => (
+                        <Col key={idx}>
                             <Form.Group controlId={option.value} className="d-flex flex-column align-items-center">
                                 <Form.Label>{option.label}</Form.Label>
                                 <DatePicker
-                                    key={index}
                                     className="form-control"
                                     id={option.value}
                                     selected={dates[option.value]}
