@@ -8,6 +8,12 @@ export function getTasks() {
             .then((tasks) => {
                 dispatch({type: actionTypes.FETCH_TASKS, tasks})
             })
+            .catch((err) => {
+            dispatch({
+                type: actionTypes.ERROR,
+                error: err.message
+            });
+        });
     }
 }
 
@@ -18,6 +24,12 @@ export function getTask(taskId) {
             .then((task) => {
                 dispatch({type: actionTypes.FETCH_TASK, task})
             })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
     }
 }
 
@@ -28,6 +40,12 @@ export function addTask(newTask) {
             .then((task) => {
                 dispatch({type: actionTypes.ADD_TASK, task})
             })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
     }
 }
 
@@ -38,6 +56,12 @@ export function editTask(taskData, isSingle = false) {
             .then((task) => {
                 dispatch({type: actionTypes.SAVE_TASK, task, isSingle})
             })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
     }
 }
 
@@ -48,6 +72,12 @@ export function deleteTask(taskId) {
             .then((task) => {
                 dispatch({type: actionTypes.DELETE_TASK, taskId})
             })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
     }
 }
 
@@ -58,5 +88,11 @@ export function deleteTasks(tasks) {
             .then(() => {
                 dispatch({type: actionTypes.DELETE_TASKS, tasks})
             })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
     }
 }

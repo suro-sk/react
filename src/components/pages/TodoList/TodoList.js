@@ -1,9 +1,10 @@
 import {Component} from 'react';
 import Task from "../../Task";
-import {Button, ButtonToolbar, ButtonGroup} from 'react-bootstrap';
+import {Button, ButtonToolbar, ButtonGroup, Row, Col} from 'react-bootstrap';
 import ConfirmModal from "../../ConfirmModal";
 import TaskCreateModal from "../../TaskCreateModal";
 import TaskEditModal from "../../TaskEditModal";
+import Filters from "../../Filters/Filters";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlus, faCheck, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {connect} from 'react-redux';
@@ -23,7 +24,7 @@ class TodoList extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (!prevProps.taskAdded && this.props.taskAdded){
+        if (!prevProps.taskAdded && this.props.taskAdded) {
             this.setState({
                 showTaskCreateModal: false
             });
@@ -31,7 +32,7 @@ class TodoList extends Component {
             return;
         }
 
-        if (!prevProps.taskEdited && this.props.taskEdited){
+        if (!prevProps.taskEdited && this.props.taskEdited) {
             this.setState({
                 currentEditing: null
             });
@@ -39,7 +40,7 @@ class TodoList extends Component {
             return;
         }
 
-        if (!prevProps.tasksDeleted && this.props.tasksDeleted){
+        if (!prevProps.tasksDeleted && this.props.tasksDeleted) {
             this.setState({
                 selectedTasks: new Set(),
                 showDeleteModal: false
@@ -121,7 +122,11 @@ class TodoList extends Component {
         return (
 
             <div className="todo-list">
-
+                <Row className="mb-5 justify-content-center">
+                    <Col>
+                        <Filters/>
+                    </Col>
+                </Row>
                 <div className="row justify-content-center mb-5">
                     <ButtonToolbar>
                         <ButtonGroup aria-label="First group">

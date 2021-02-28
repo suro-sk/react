@@ -45,7 +45,8 @@ export default function reducer(state = defaultState, action) {
                 ...state,
                 tasks: [...state.tasks, action.task],
                 loading: false,
-                taskAdded: true
+                taskAdded: true,
+                successMsg: 'Task successfully created.'
             }
         }
 
@@ -58,6 +59,7 @@ export default function reducer(state = defaultState, action) {
                     task,
                     taskEdited: true,
                     loading: false,
+                    successMsg: 'Task successfully modified.'
                 }
             } else {
                 const tasks = [...state.tasks];
@@ -69,6 +71,7 @@ export default function reducer(state = defaultState, action) {
                     tasks,
                     taskEdited: true,
                     loading: false,
+                    successMsg: 'Task successfully modified.'
                 }
             }
         }
@@ -83,6 +86,7 @@ export default function reducer(state = defaultState, action) {
                 tasks: remainingTasks,
                 task: null,
                 loading: false,
+                successMsg: 'Task successfully deleted.'
             }
         }
         case actionTypes.DELETE_TASKS: {
@@ -95,7 +99,15 @@ export default function reducer(state = defaultState, action) {
                 tasks: remainingTasks,
                 tasksDeleted: true,
                 loading: false,
+                successMsg: 'Tasks successfully modified.'
             }
+        }
+        case actionTypes.ERROR:{
+            return {
+                ...state,
+                loading: false,
+                errorMsg: action.error
+            };
         }
         case actionTypes.INCREMENT_COUNT:
             return {

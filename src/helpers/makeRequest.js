@@ -23,8 +23,5 @@ export default function makeRequest(url, method = 'GET', body) {
 
             const data = await res.json()
             return data;
-        })
-        .catch((e) => {
-            console.log(e);
         });
 }
