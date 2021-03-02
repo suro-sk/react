@@ -6,6 +6,7 @@ import About from "./components/pages/About/About";
 import Contact from "./components/pages/Contact/Contact";
 import NotFound from "./components/pages/NotFound/NotFound";
 import SingleTask from "./components/pages/SingleTask/SingleTask";
+import Counter from "./components/pages/Counter/Counter";
 import {
     BrowserRouter as Router,
     Switch,
@@ -41,6 +42,11 @@ function App() {
                             path="/contact-us"
                             exact
                             component={Contact}
+                        />
+                        <Route
+                            path="/counter"
+                            exact
+                            component={Counter}
                         />
                         <Route
                             path="/not-found"

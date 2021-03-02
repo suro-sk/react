@@ -9,6 +9,11 @@ export default function Header(props) {
             <NavLink to="/" className="navbar-brand">ToDo List</NavLink>
             <Nav className="ml-auto">
                 <NavLink
+                    to="/counter"
+                    className="nav-link"
+                    activeClassName="active"
+                >Counter</NavLink>
+                <NavLink
                     to="/about-us"
                     className="nav-link"
                     activeClassName="active"
