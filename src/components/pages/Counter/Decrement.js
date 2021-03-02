@@ -1,6 +1,7 @@
 import React from "react";
 import {connect} from 'react-redux';
 import {Button} from 'react-bootstrap';
+import * as actionTypes from '../../store/actionTypes';
 
 function Decrement(props) {
     return (
@@ -12,7 +13,7 @@ const mapDispatchToProps = {
 
     onMinusButton: function(){
         return (dispatch) => {
-            dispatch({type: 'DECREMENT_COUNT'});
+            dispatch({type: actionTypes.DECREMENT_COUNT});
         }
     }
 };

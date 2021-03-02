@@ -50,7 +50,7 @@ class TaskEditModal extends PureComponent {
             title,
             description,
             date: formatDate(this.state.date.toISOString())
-        });
+        }, this.props?.isSingle ? true : false);
     };
 
     render() {
@@ -113,6 +113,7 @@ class TaskEditModal extends PureComponent {
 TaskEditModal.propTypes = {
     task: PropTypes.object.isRequired,
     onHide: PropTypes.func.isRequired,
+    isSingle: PropTypes.bool
 };
 
 const mapDispatchToProps = {

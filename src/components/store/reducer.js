@@ -1,53 +1,82 @@
+import * as actionTypes from './actionTypes';
+
 const defaultState = {
     count: 0,
     tasks: [],
+    task: null,
     taskAdded: false,
     taskEdited: false,
-    tasksDeleted: false
+    tasksDeleted: false,
+    loading: false,
+    successMsg: null,
+    errorMsg: null,
 };
 
 export default function reducer(state = defaultState, action) {
 
     switch (action.type) {
-        case 'FETCH_TASKS': {
+        case actionTypes.PENDING: {
             return {
                 ...state,
-                tasks: action.tasks
+                loading: true,
+                taskAdded: false,
+                taskEdited: false,
+                tasksDeleted: false,
+                successMsg: null,
+                errorMsg: null,
+            };
+        }
+        case actionTypes.FETCH_TASKS: {
+            return {
+                ...state,
+                tasks: action.tasks,
+                loading: false
             }
         }
-        case 'ADD_TASK': {
+        case actionTypes.FETCH_TASK: {
+            return {
+                ...state,
+                task: action.task,
+                loading: false
+            }
+        }
+        case actionTypes.ADD_TASK: {
             return {
                 ...state,
                 tasks: [...state.tasks, action.task],
-                taskAdded: true
+                loading: false,
+                taskAdded: true,
+                successMsg: 'Task successfully created.'
             }
         }
-        case 'ADDING_TASK': {
-            return {
-                ...state,
-                taskAdded: false
-            }
-        }
-        case 'SAVE_TASK': {
-            console.log('aaaaa',action.task)
-            const task = action.task;
-            const tasks = [...state.tasks];
-            const idx = tasks.findIndex((thisTask) => thisTask._id === task._id);
-            tasks[idx] = task;
 
-            return {
-                ...state,
-                tasks,
-                taskEdited: true
+        case actionTypes.SAVE_TASK: {
+            const task = action.task;
+            if (action.isSingle) {
+
+                return {
+                    ...state,
+                    task,
+                    taskEdited: true,
+                    loading: false,
+                    successMsg: 'Task successfully modified.'
+                }
+            } else {
+                const tasks = [...state.tasks];
+                const idx = tasks.findIndex((thisTask) => thisTask._id === task._id);
+                tasks[idx] = task;
+
+                return {
+                    ...state,
+                    tasks,
+                    taskEdited: true,
+                    loading: false,
+                    successMsg: 'Task successfully modified.'
+                }
             }
         }
-        case 'SAVING_TASK': {
-            return {
-                ...state,
-                taskEdited: false
-            }
-        }
-        case 'DELETE_TASK': {
+
+        case actionTypes.DELETE_TASK: {
             const remainingTasks = state.tasks.filter((task) => {
                 return action.taskId !== task._id
             });
@@ -55,10 +84,12 @@ export default function reducer(state = defaultState, action) {
             return {
                 ...state,
                 tasks: remainingTasks,
+                task: null,
+                loading: false,
+                successMsg: 'Task successfully deleted.'
             }
         }
-        case 'DELETE_TASKS': {
-            console.log('aaaa', action)
+        case actionTypes.DELETE_TASKS: {
             const remainingTasks = state.tasks.filter(task => {
                 return !action.tasks.has(task._id);
             })
@@ -66,15 +97,24 @@ export default function reducer(state = defaultState, action) {
             return {
                 ...state,
                 tasks: remainingTasks,
-                tasksDeleted: true
+                tasksDeleted: true,
+                loading: false,
+                successMsg: 'Tasks successfully modified.'
             }
         }
-        case 'INCREMENT_COUNT':
+        case actionTypes.ERROR:{
+            return {
+                ...state,
+                loading: false,
+                errorMsg: action.error
+            };
+        }
+        case actionTypes.INCREMENT_COUNT:
             return {
                 ...state,
                 count: state.count + 1
             }
-        case 'DECREMENT_COUNT':
+        case actionTypes.DECREMENT_COUNT:
             return {
                 ...state,
                 count: state.count - 1

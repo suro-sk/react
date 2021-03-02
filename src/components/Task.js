@@ -13,7 +13,7 @@ import {deleteTask} from "./store/actions";
 class Task extends PureComponent  {
 
     render() {
-        const {onEdit, task, deleteTask, buttonDisabled, selected} = this.props;
+        const {onEdit, task, buttonDisabled, selected} = this.props;
         return (
             <Card>
                 <Card.Header>

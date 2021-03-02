@@ -1,3 +1,4 @@
+import React, {useEffect} from "react";
 import TodoList from "./components/pages/TodoList/TodoList";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
@@ -8,18 +9,47 @@ import NotFound from "./components/pages/NotFound/NotFound";
 import SingleTask from "./components/pages/SingleTask/SingleTask";
 import Counter from "./components/pages/Counter/Counter";
 import {
-    BrowserRouter as Router,
+    Router,
     Switch,
     Route,
     Redirect
 } from "react-router-dom";
 import Footer from "./components/Footer";
-import React from "react";
+import {connect} from 'react-redux';
+import Loader from "./components/Loader/Loader";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {history} from './history';
 
-function App() {
+function App({loading, successMsg, errorMsg}) {
+    useEffect(()=>{
+        if(successMsg){
+            toast.success(successMsg, {
+                position: "bottom-left",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
+        }
+
+        if(errorMsg){
+            toast.error(errorMsg, {
+                position: "bottom-left",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
+        }
+
+    }, [successMsg, errorMsg]);
+
     return (
         <div className="App">
-            <Router>
+            <Router history={history}>
                 <Header/>
                 <div className="container page-holder">
                     <Switch>
@@ -59,8 +89,18 @@ function App() {
                 </div>
                 <Footer/>
             </Router>
+            {loading && <Loader/>}
+            <ToastContainer />
         </div>
     );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        loading: state.loading,
+        successMsg: state.successMsg,
+        errorMsg: state.errorMsg
+    };
+};
+
+export default connect(mapStateToProps)(App);
