@@ -8,12 +8,13 @@ function Decrement(props) {
     )
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onMinusButton: () => {
-            dispatch({ type: 'DECREMENT_COUNT' });
+const mapDispatchToProps = {
+
+    onMinusButton: function(){
+        return (dispatch) => {
+            dispatch({type: 'DECREMENT_COUNT'});
         }
-    };
+    }
 };
 
 export default connect(null, mapDispatchToProps)(Decrement);

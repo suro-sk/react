@@ -2,6 +2,9 @@ import React, {PureComponent, createRef} from 'react';
 import {Modal, Button, FormControl, Form} from 'react-bootstrap'
 import PropTypes from 'prop-types';
 import DatePicker from "react-datepicker";
+import {connect} from 'react-redux';
+import {editTask} from "./store/actions";
+import {formatDate} from "../helpers/functions";
 
 class TaskEditModal extends PureComponent {
 
@@ -42,11 +45,11 @@ class TaskEditModal extends PureComponent {
             return;
         }
 
-        this.props.onAccept({
+        this.props.editTask({
             _id: this.state._id,
             title,
             description,
-            date: this.state.date
+            date: formatDate(this.state.date.toISOString())
         });
     };
 
@@ -109,8 +112,11 @@ class TaskEditModal extends PureComponent {
 
 TaskEditModal.propTypes = {
     task: PropTypes.object.isRequired,
-    onAccept: PropTypes.func.isRequired,
     onHide: PropTypes.func.isRequired,
 };
 
-export default TaskEditModal;
+const mapDispatchToProps = {
+    editTask
+};
+
+export default connect(null, mapDispatchToProps)(TaskEditModal);
