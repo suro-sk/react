@@ -3,7 +3,12 @@ import reducer from "./reducer";
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 
+let middlewares = [thunk];
 
-const middleware = applyMiddleware(thunk, logger);
+if (process.env.NODE_ENV === 'development') {
+    middlewares.push(thunk)
+}
+
+const middleware = applyMiddleware(...middlewares);
 
 export const store = createStore(reducer, middleware);

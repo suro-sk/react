@@ -2,7 +2,6 @@ import makeRequest from "../../helpers/makeRequest";
 import * as actionTypes from './actionTypes';
 
 const apiHost = process.env.REACT_APP_API_HOST;
-console.log()
 
 export function getTasks(params = {}) {
     const queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
@@ -58,7 +57,15 @@ export function editTask(taskData, isSingle = false) {
         dispatch({type: 'PENDING'});
         makeRequest(`${apiHost}/task/${taskData._id}`, 'PUT', taskData)
             .then((task) => {
-                dispatch({type: actionTypes.SAVE_TASK, task, isSingle})
+                let dispatchArgs = {
+                    type: actionTypes.SAVE_TASK,
+                    task,
+                    isSingle
+                }
+
+                taskData.status && (dispatchArgs.status = taskData.status);
+
+                dispatch(dispatchArgs)
             })
             .catch((err) => {
                 dispatch({
