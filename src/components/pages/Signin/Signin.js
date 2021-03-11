@@ -87,7 +87,7 @@ function Signin(props) {
     return (
         <div className={styles.accountForm}>
             <Row className="justify-content-center mt-5">
-                <Col xs={6}>
+                <Col xs={12} md={8} lg={5}>
                     <Form onSubmit={handleFormSubmit}>
                         <Card style={{width: '100%'}}>
                             <Card.Header>
