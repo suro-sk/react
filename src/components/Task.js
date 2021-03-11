@@ -1,16 +1,16 @@
-import React, {PureComponent } from 'react';
+import React, {PureComponent} from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import PropTypes from 'prop-types';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faEdit, faCheck, faRedo} from "@fortawesome/free-solid-svg-icons";
-import {formatDate, truncateString, dateToDMY} from '../helpers/functions';
+import {truncateString, dateToDMY} from '../helpers/functions';
 import {Link} from "react-router-dom";
 import {connect} from 'react-redux';
 import {deleteTask, editTask} from "./store/actions";
 
-class Task extends PureComponent  {
+class Task extends PureComponent {
 
     render() {
         const {onEdit, task, buttonDisabled, selected, editTask} = this.props;

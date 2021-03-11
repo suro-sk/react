@@ -1,12 +1,11 @@
 import React, {PureComponent} from "react";
 import TaskEditModal from "../../TaskEditModal";
-import {dateToDMY, formatDate} from '../../../helpers/functions'
+import {dateToDMY} from '../../../helpers/functions'
 import {Button, ButtonToolbar} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faEdit, faCheck, faRedo} from "@fortawesome/free-solid-svg-icons";
 import {connect} from 'react-redux';
 import {deleteTask, getTask, editTask} from "../../store/actions";
-import Card from "react-bootstrap/Card";
 
 class SingleTask extends PureComponent {
     state = {

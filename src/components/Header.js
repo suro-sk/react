@@ -22,6 +22,14 @@ export default function Header(props) {
                     to="/contact-us"
                     activeClassName="active"
                     className="nav-link">Contact Us</NavLink>
+                <NavLink
+                    to="/sign-up"
+                    activeClassName="active"
+                    className="nav-link">Sign Up</NavLink>
+                <NavLink
+                    to="/sign-in"
+                    activeClassName="active"
+                    className="nav-link">Sign In</NavLink>
             </Nav>
         </Navbar>
     )

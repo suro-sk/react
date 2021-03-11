@@ -7,6 +7,8 @@ import About from "./components/pages/About/About";
 import Contact from "./components/pages/Contact/Contact";
 import NotFound from "./components/pages/NotFound/NotFound";
 import SingleTask from "./components/pages/SingleTask/SingleTask";
+import Signup from "./components/pages/Signup/Signup";
+import Signin from "./components/pages/Signin/Signin";
 import Counter from "./components/pages/Counter/Counter";
 import {
     Router,
@@ -17,13 +19,13 @@ import {
 import Footer from "./components/Footer";
 import {connect} from 'react-redux';
 import Loader from "./components/Loader/Loader";
-import { ToastContainer, toast } from 'react-toastify';
+import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {history} from './history';
 
 function App({loading, successMsg, errorMsg}) {
-    useEffect(()=>{
-        if(successMsg){
+    useEffect(() => {
+        if (successMsg) {
             toast.success(successMsg, {
                 position: "bottom-left",
                 autoClose: 3000,
@@ -34,7 +36,7 @@ function App({loading, successMsg, errorMsg}) {
             });
         }
 
-        if(errorMsg){
+        if (errorMsg) {
             toast.error(errorMsg, {
                 position: "bottom-left",
                 autoClose: 3000,
@@ -74,6 +76,16 @@ function App({loading, successMsg, errorMsg}) {
                             component={Contact}
                         />
                         <Route
+                            path="/sign-up"
+                            exact
+                            component={Signup}
+                        />
+                        <Route
+                            path="/sign-in"
+                            exact
+                            component={Signin}
+                        />
+                        <Route
                             path="/counter"
                             exact
                             component={Counter}
@@ -84,13 +96,14 @@ function App({loading, successMsg, errorMsg}) {
                             component={NotFound}
                         />
 
+
                         <Redirect to="/not-found"/>
                     </Switch>
                 </div>
                 <Footer/>
             </Router>
             {loading && <Loader/>}
-            <ToastContainer />
+            <ToastContainer/>
         </div>
     );
 }

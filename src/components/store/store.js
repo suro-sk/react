@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 let middlewares = [thunk];
 
 if (process.env.NODE_ENV === 'development') {
-    middlewares.push(thunk)
+    middlewares.push(logger)
 }
 
 const middleware = applyMiddleware(...middlewares);
