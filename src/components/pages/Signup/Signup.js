@@ -53,6 +53,22 @@ function Signup(props) {
             })
         }
 
+        if (name === 'password' || name === 'password_confirm') {
+            let anotherFieldValue = name === 'password' ? fieldValues.password_confirm : fieldValues.password;
+            if (value !== anotherFieldValue) {
+                setformErrors({
+                    ...formErrors,
+                    password_confirm: 'Passwords must match'
+                })
+            }
+            else {
+                setformErrors({
+                    ...formErrors,
+                    password_confirm: null
+                })
+            }
+        }
+
         if (name === 'password' && value && value.trim().length < 6) {
             setformErrors({
                 ...formErrors,
@@ -60,12 +76,6 @@ function Signup(props) {
             })
         }
 
-        if (name === 'password_confirm' && value && value !== fieldValues.password) {
-            setformErrors({
-                ...formErrors,
-                password_confirm: 'Passwords must match'
-            })
-        }
     }
 
 
