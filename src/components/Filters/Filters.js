@@ -77,11 +77,11 @@ function Filters(props) {
             value: 'create_gte'
         },
         {
-            label: 'Complete before',
+            label: 'Deadline before',
             value: 'complete_lte'
         },
         {
-            label: 'Complete after',
+            label: 'Deadline after',
             value: 'complete_gte'
         }
     ];
