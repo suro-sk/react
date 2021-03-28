@@ -1,5 +1,7 @@
 import makeRequest from "../../helpers/makeRequest";
 import * as actionTypes from './actionTypes';
+import {history} from "../../history";
+import {requestNoToken, logOut} from '../../helpers/authToken';
 
 const apiHost = process.env.REACT_APP_API_HOST;
 
@@ -98,6 +100,90 @@ export function deleteTasks(tasks) {
         makeRequest(`${apiHost}/task`, 'PATCH', {tasks: [...tasks]})
             .then(() => {
                 dispatch({type: actionTypes.DELETE_TASKS, tasks})
+            })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
+    }
+}
+
+export function signUp(data) {
+    return (dispatch) => {
+        dispatch({type: 'PENDING'});
+        requestNoToken(`${apiHost}/user`, 'POST', data)
+            .then(() => {
+                history.push('/sign-in')
+                dispatch({type: actionTypes.REGISTER})
+            })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
+    }
+}
+
+export function signIn(data) {
+    return (dispatch) => {
+        dispatch({type: 'PENDING'});
+        requestNoToken(`${apiHost}/user/sign-in`, 'POST', data)
+            .then((data) => {
+                localStorage.setItem('tokens', JSON.stringify(data))
+                // history.push('/')
+                dispatch({type: actionTypes.LOGIN})
+            })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
+    }
+}
+
+export function signOut(data) {
+    return (dispatch) => {
+        dispatch({type: 'PENDING'});
+        requestNoToken(`${apiHost}/user/sign-out`, 'POST', data)
+            .then((data) => {
+                logOut();
+
+            })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
+    }
+}
+
+export function getUser() {
+    return (dispatch) => {
+        dispatch({type: 'PENDING'});
+        makeRequest(`${apiHost}/user`)
+            .then((user) => {
+                dispatch({type: actionTypes.GET_USER, user: `${user.name} ${user.surname}`})
+            })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
+    }
+}
+
+export function sendContactForm(data) {
+    return (dispatch) => {
+        dispatch({type: 'PENDING'});
+        requestNoToken(`${apiHost}/form`, 'POST', data)
+            .then(() => {
+                dispatch({type: actionTypes.CONTACT_FORM})
             })
             .catch((err) => {
                 dispatch({

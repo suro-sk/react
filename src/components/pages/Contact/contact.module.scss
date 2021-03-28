@@ -1,7 +1,12 @@
 .contactPage {
-    max-width: 800px;
-    margin: auto;
-    textarea {
-        resize: none;
-    }
+  max-width: 800px;
+  margin: auto;
+
+  textarea {
+    resize: none;
+  }
+
+  .errorMsg {
+    color: red;
+  }
 }

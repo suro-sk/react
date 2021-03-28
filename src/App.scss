@@ -1,6 +1,12 @@
+img {
+  max-width: 100%;
+}
 .App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   .page-holder {
-    min-height: 79vh;
+    flex-grow: 1;
   }
   .todo-list {
 
@@ -11,5 +17,10 @@
       }
 
     }
+  }
+
+  input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
   }
 }

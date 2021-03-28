@@ -189,7 +189,7 @@ function Filters(props) {
 
                 {
                     dateOptions.map((option, idx) => (
-                        <Col key={idx}>
+                        <Col key={idx} lg={3} md={3} sm={6}>
                             <Form.Group controlId={option.value} className="d-flex flex-column align-items-center">
                                 <Form.Label>{option.label}</Form.Label>
                                 <DatePicker

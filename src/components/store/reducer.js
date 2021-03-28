@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes';
+import {isUserLoggedIn} from '../../helpers/authToken'
 
 const defaultState = {
     count: 0,
@@ -10,6 +11,9 @@ const defaultState = {
     loading: false,
     successMsg: null,
     errorMsg: null,
+    isUserLoggedIn: isUserLoggedIn(),
+    user: null,
+    contactFormSent: false
 };
 
 export default function reducer(state = defaultState, action) {
@@ -22,6 +26,7 @@ export default function reducer(state = defaultState, action) {
                 taskAdded: false,
                 taskEdited: false,
                 tasksDeleted: false,
+                contactFormSent: false,
                 successMsg: null,
                 errorMsg: null,
             };
@@ -49,17 +54,15 @@ export default function reducer(state = defaultState, action) {
                 successMsg: 'Task successfully created.'
             }
         }
-
         case actionTypes.SAVE_TASK: {
             const task = action.task;
 
             let successMsg = 'Task successfully modified.'
 
             if (action.status) {
-                if(action.status === 'done'){
+                if (action.status === 'done') {
                     successMsg = 'Task status changed to Done'
-                }
-                else {
+                } else {
                     successMsg = 'Task status changed to Active'
                 }
             }
@@ -86,7 +89,6 @@ export default function reducer(state = defaultState, action) {
                 }
             }
         }
-
         case actionTypes.DELETE_TASK: {
             const remainingTasks = state.tasks.filter((task) => {
                 return action.taskId !== task._id
@@ -113,6 +115,43 @@ export default function reducer(state = defaultState, action) {
                 successMsg: 'Tasks successfully modified.'
             }
         }
+        case actionTypes.REGISTER: {
+            return {
+                ...state,
+                loading: false,
+                successMsg: 'You have successfully registered. Please Log In.'
+            }
+        }
+        case actionTypes.LOGIN: {
+            return {
+                ...state,
+                loading: false,
+                isUserLoggedIn: true
+            }
+        }
+        case actionTypes.LOGOUT: {
+            return {
+                ...state,
+                loading: false,
+                isUserLoggedIn: false,
+                user: null
+            }
+        }
+        case actionTypes.GET_USER: {
+            return {
+                ...state,
+                loading: false,
+                user: action.user
+            }
+        }
+        case actionTypes.CONTACT_FORM: {
+            return {
+                ...state,
+                loading: false,
+                contactFormSent: true,
+                successMsg: 'Your message successfully sent!'
+            }
+        }
         case actionTypes.ERROR: {
             return {
                 ...state,
@@ -120,16 +159,6 @@ export default function reducer(state = defaultState, action) {
                 errorMsg: action.error
             };
         }
-        case actionTypes.INCREMENT_COUNT:
-            return {
-                ...state,
-                count: state.count + 1
-            }
-        case actionTypes.DECREMENT_COUNT:
-            return {
-                ...state,
-                count: state.count - 1
-            }
         default:
             return state;
     }

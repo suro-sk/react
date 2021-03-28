@@ -1,8 +1,10 @@
 import React, {useState} from "react";
 import {Button, Card, Row, Col, Form} from "react-bootstrap";
+import {connect} from 'react-redux';
 import styles from './Signup.module.scss';
+import {signUp} from "../../store/actions";
 
-function Signup(props) {
+function Signup({signUp}) {
 
     let emptyMsg = 'This field can\'t be empty';
 
@@ -11,7 +13,7 @@ function Signup(props) {
         surname: '',
         email: '',
         password: '',
-        password_confirm: '',
+        confirmPassword: '',
     });
 
     let [formErrors, setformErrors] = useState({
@@ -19,7 +21,7 @@ function Signup(props) {
         surname: null,
         email: null,
         password: null,
-        password_confirm: null
+        confirmPassword: null
     });
 
 
@@ -53,18 +55,18 @@ function Signup(props) {
             })
         }
 
-        if (name === 'password' || name === 'password_confirm') {
-            let anotherFieldValue = name === 'password' ? fieldValues.password_confirm : fieldValues.password;
+        if (name === 'password' || name === 'confirmPassword') {
+            let anotherFieldValue = name === 'password' ? fieldValues.confirmPassword : fieldValues.password;
             if (value !== anotherFieldValue) {
                 setformErrors({
                     ...formErrors,
-                    password_confirm: 'Passwords must match'
+                    confirmPassword: 'Passwords must match'
                 })
-            }
-            else {
+            } else {
                 setformErrors({
                     ...formErrors,
-                    password_confirm: null
+                    confirmPassword: null,
+                    passwordpassword: null,
                 })
             }
         }
@@ -72,7 +74,7 @@ function Signup(props) {
         if (name === 'password' && value && value.trim().length < 6) {
             setformErrors({
                 ...formErrors,
-                password: 'Password must be at least 6 characters'
+                passwordpassword: 'Password must be at least 6 characters'
             })
         }
 
@@ -91,7 +93,7 @@ function Signup(props) {
                 surname: emptyMsg,
                 email: emptyMsg,
                 password: emptyMsg,
-                password_confirm: emptyMsg
+                confirmPassword: emptyMsg
             });
 
             return false;
@@ -101,10 +103,10 @@ function Signup(props) {
             return false;
         }
 
-        // Form Submission
+        signUp(fieldValues);
     }
 
-    let {name, surname, email, password, password_confirm} = fieldValues;
+    let {name, surname, email, password, confirmPassword} = fieldValues;
 
     return (
         <div className={styles.accountForm}>
@@ -160,15 +162,15 @@ function Signup(props) {
                                         </Form.Text>
                                     }
                                 </Form.Group>
-                                <Form.Group controlId="password_confirm">
+                                <Form.Group controlId="confirmPassword">
                                     <Form.Control type="password" placeholder="Password confirmation"
-                                                  value={password_confirm}
-                                                  name="password_confirm"
+                                                  value={confirmPassword}
+                                                  name="confirmPassword"
                                                   onChange={handleUserInput}/>
                                     {
-                                        formErrors.password_confirm &&
+                                        formErrors.confirmPassword &&
                                         <Form.Text className={styles.errorMsg}>
-                                            {formErrors.password_confirm}
+                                            {formErrors.confirmPassword}
                                         </Form.Text>
                                     }
                                 </Form.Group>
@@ -186,5 +188,8 @@ function Signup(props) {
     )
 }
 
+const mapDispatchToProps = {
+    signUp
+};
 
-export default Signup;
+export default connect(null, mapDispatchToProps)(Signup);

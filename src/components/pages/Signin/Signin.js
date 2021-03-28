@@ -1,8 +1,10 @@
 import React, {useState} from "react";
 import {Button, Card, Row, Col, Form} from "react-bootstrap";
 import styles from './Signin.module.scss';
+import {connect} from "react-redux";
+import {signIn} from "../../store/actions";
 
-function Signin(props) {
+function Signin({signIn}) {
 
     let emptyMsg = 'This field can\'t be empty';
 
@@ -79,7 +81,7 @@ function Signin(props) {
             return false;
         }
 
-        // Form Submission
+        signIn(fieldValues)
     }
 
     let {email, password} = fieldValues;
@@ -131,4 +133,8 @@ function Signin(props) {
 }
 
 
-export default Signin;
+const mapDispatchToProps = {
+    signIn
+};
+
+export default connect(null, mapDispatchToProps)(Signin);

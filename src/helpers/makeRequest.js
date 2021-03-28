@@ -1,9 +1,12 @@
-export default function makeRequest(url, method = 'GET', body) {
+import {getToken} from "./authToken";
 
+export default async function makeRequest(url, method = 'GET', body) {
+    const token = await getToken();
     const params = {
         method: method,
         headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            "Authorization": `Bearer ${token}`
         }
     }
 
@@ -22,6 +25,7 @@ export default function makeRequest(url, method = 'GET', body) {
             }
 
             const data = await res.json()
+
             return data;
         });
 }
