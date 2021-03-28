@@ -1,26 +1,30 @@
 import makeRequest from "../../helpers/makeRequest";
 import * as actionTypes from './actionTypes';
 
-export function getTasks() {
+const apiHost = process.env.REACT_APP_API_HOST;
+console.log()
+
+export function getTasks(params = {}) {
+    const queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
     return (dispatch) => {
         dispatch({type: 'PENDING'});
-        makeRequest('http://localhost:3001/task')
+        makeRequest(`${apiHost}/task?${queryString}`)
             .then((tasks) => {
                 dispatch({type: actionTypes.FETCH_TASKS, tasks})
             })
             .catch((err) => {
-            dispatch({
-                type: actionTypes.ERROR,
-                error: err.message
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
             });
-        });
     }
 }
 
 export function getTask(taskId) {
     return (dispatch) => {
         dispatch({type: 'PENDING'});
-        makeRequest(`http://localhost:3001/task/${taskId}`)
+        makeRequest(`${apiHost}/task/${taskId}`)
             .then((task) => {
                 dispatch({type: actionTypes.FETCH_TASK, task})
             })
@@ -36,7 +40,7 @@ export function getTask(taskId) {
 export function addTask(newTask) {
     return (dispatch) => {
         dispatch({type: 'PENDING'});
-        makeRequest('http://localhost:3001/task', 'POST', newTask)
+        makeRequest(`${apiHost}/task`, 'POST', newTask)
             .then((task) => {
                 dispatch({type: actionTypes.ADD_TASK, task})
             })
@@ -52,7 +56,7 @@ export function addTask(newTask) {
 export function editTask(taskData, isSingle = false) {
     return (dispatch) => {
         dispatch({type: 'PENDING'});
-        makeRequest(`http://localhost:3001/task/${taskData._id}`, 'PUT', taskData)
+        makeRequest(`${apiHost}/task/${taskData._id}`, 'PUT', taskData)
             .then((task) => {
                 dispatch({type: actionTypes.SAVE_TASK, task, isSingle})
             })
@@ -68,7 +72,7 @@ export function editTask(taskData, isSingle = false) {
 export function deleteTask(taskId) {
     return (dispatch) => {
         dispatch({type: 'PENDING'});
-        makeRequest(`http://localhost:3001/task/${taskId}`, 'DELETE')
+        makeRequest(`${apiHost}/task/${taskId}`, 'DELETE')
             .then((task) => {
                 dispatch({type: actionTypes.DELETE_TASK, taskId})
             })
@@ -84,7 +88,7 @@ export function deleteTask(taskId) {
 export function deleteTasks(tasks) {
     return (dispatch) => {
         dispatch({type: 'PENDING'});
-        makeRequest(`http://localhost:3001/task`, 'PATCH', {tasks: [...tasks]})
+        makeRequest(`${apiHost}/task`, 'PATCH', {tasks: [...tasks]})
             .then(() => {
                 dispatch({type: actionTypes.DELETE_TASKS, tasks})
             })

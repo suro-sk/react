@@ -3,7 +3,8 @@ import {FormControl, Button, DropdownButton, Dropdown, Form, Row, Col, InputGrou
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {connect} from 'react-redux';
-
+import {formatDate} from "../../helpers/functions";
+import {getTasks} from "../store/actions";
 
 function Filters(props) {
 
@@ -85,6 +86,8 @@ function Filters(props) {
         }
     ];
 
+    const [search, setSearch] = useState('');
+
     const [status, setStatus] = useState({
         value: ''
     });
@@ -100,20 +103,40 @@ function Filters(props) {
         complete_gte: null
     });
 
-    const handleChangeDate = (value, name)=>{
+    const handleChangeDate = (value, name) => {
         setDates({
             ...dates,
             [name]: value
         });
     };
 
+    function filtersSubmitHandler(e) {
+        e.preventDefault();
+
+        const params = {};
+
+        search && (params.search = search);
+        sorting.value && (params.sort = sorting.value);
+        status.value && (params.status = status.value);
+
+        for (let key in dates) {
+            if (dates[key]) {
+                params[key] = formatDate(dates[key].toISOString());
+            }
+        }
+
+        props.getTasks(params);
+    }
+
     return (
-        <Form className="filters">
+        <Form className="filters" onSubmit={filtersSubmitHandler}>
             <InputGroup>
                 <FormControl
                     placeholder="Search"
                     aria-label="Search"
                     variant="outline-primary"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                 />
                 <DropdownButton
                     as={InputGroup.Append}
@@ -173,7 +196,7 @@ function Filters(props) {
                                     className="form-control"
                                     id={option.value}
                                     selected={dates[option.value]}
-                                    onChange={(value)=> handleChangeDate(value, option.value)}
+                                    onChange={(value) => handleChangeDate(value, option.value)}
                                     isClearable
                                 />
 
@@ -187,4 +210,8 @@ function Filters(props) {
     )
 }
 
-export default connect()(Filters);
+const mapDispatchToProps = {
+    getTasks,
+};
+
+export default connect(null, mapDispatchToProps)(Filters);
