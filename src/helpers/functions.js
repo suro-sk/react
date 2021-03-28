@@ -8,3 +8,10 @@ export function truncateString(str = '', length = 100) {
     }
     return str.slice(0, length) + '...';
 }
+
+export function dateToDMY(date) {
+    if (!date) {
+        return date;
+    }
+    return new Date(date).toLocaleString().split(',')[0];
+}

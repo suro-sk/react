@@ -52,14 +52,25 @@ export default function reducer(state = defaultState, action) {
 
         case actionTypes.SAVE_TASK: {
             const task = action.task;
-            if (action.isSingle) {
 
+            let successMsg = 'Task successfully modified.'
+
+            if (action.status) {
+                if(action.status === 'done'){
+                    successMsg = 'Task status changed to Done'
+                }
+                else {
+                    successMsg = 'Task status changed to Active'
+                }
+            }
+
+            if (action.isSingle) {
                 return {
                     ...state,
                     task,
                     taskEdited: true,
                     loading: false,
-                    successMsg: 'Task successfully modified.'
+                    successMsg
                 }
             } else {
                 const tasks = [...state.tasks];
@@ -71,7 +82,7 @@ export default function reducer(state = defaultState, action) {
                     tasks,
                     taskEdited: true,
                     loading: false,
-                    successMsg: 'Task successfully modified.'
+                    successMsg
                 }
             }
         }
@@ -102,7 +113,7 @@ export default function reducer(state = defaultState, action) {
                 successMsg: 'Tasks successfully modified.'
             }
         }
-        case actionTypes.ERROR:{
+        case actionTypes.ERROR: {
             return {
                 ...state,
                 loading: false,

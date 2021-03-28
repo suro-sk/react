@@ -1,19 +1,19 @@
-import React, {PureComponent } from 'react';
+import React, {PureComponent} from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import PropTypes from 'prop-types';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrash, faEdit} from "@fortawesome/free-solid-svg-icons";
-import {formatDate, truncateString} from '../helpers/functions';
+import {faTrash, faEdit, faCheck, faRedo} from "@fortawesome/free-solid-svg-icons";
+import {truncateString, dateToDMY} from '../helpers/functions';
 import {Link} from "react-router-dom";
 import {connect} from 'react-redux';
-import {deleteTask} from "./store/actions";
+import {deleteTask, editTask} from "./store/actions";
 
-class Task extends PureComponent  {
+class Task extends PureComponent {
 
     render() {
-        const {onEdit, task, buttonDisabled, selected} = this.props;
+        const {onEdit, task, buttonDisabled, selected, editTask} = this.props;
         return (
             <Card>
                 <Card.Header>
@@ -33,12 +33,45 @@ class Task extends PureComponent  {
                 </Card.Header>
                 <Card.Body>
                     <p>
-                        <strong>Date: </strong>
-                        <time>{formatDate(task.date) || "Not Available"}</time>
+                        <strong>Status: </strong>
+                        <span>{task.status.charAt(0).toUpperCase() + task.status.slice(1)}</span>
+                    </p>
+                    <p>
+                        <strong>Create at: </strong>
+                        <time>{dateToDMY(task.created_at) || "Not Available"}</time>
+                    </p>
+                    <p>
+                        <strong>Deadline: </strong>
+                        <time>{dateToDMY(task.date) || "Not Available"}</time>
                     </p>
                     {truncateString(task.description, 74)}
                 </Card.Body>
                 <Card.Footer>
+                    {
+                        task.status === 'active' ?
+                            <Button
+                                className="mr-1"
+                                title="Mark as Done"
+                                variant="success"
+                                onClick={() => editTask({
+                                    status: 'done',
+                                    _id: task._id
+                                })}
+                                disabled={buttonDisabled}>
+                                <FontAwesomeIcon icon={faCheck}/>
+                            </Button> :
+                            <Button
+                                className="mr-1"
+                                title="Mark as Active"
+                                variant="secondary"
+                                onClick={() => editTask({
+                                    status: 'active',
+                                    _id: task._id
+                                })}
+                                disabled={buttonDisabled}>
+                                <FontAwesomeIcon icon={faRedo}/>
+                            </Button>
+                    }
                     <Button
                         className="mr-1"
                         title="Edit"
@@ -71,7 +104,8 @@ Task.propTypes = {
 
 
 const mapDispatchToProps = {
-    deleteTask
+    deleteTask,
+    editTask
 };
 
 export default connect(null, mapDispatchToProps)(Task);
