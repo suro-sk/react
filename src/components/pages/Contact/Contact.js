@@ -1,51 +1,61 @@
-import React, {useState} from "react";
-import {Form, Button, Alert} from 'react-bootstrap';
+import React, {useState, useEffect} from "react";
+import {Form, Button} from 'react-bootstrap';
+import {connect} from 'react-redux';
+import {sendContactForm} from "../../store/actions";
 import styles from './contact.module.scss';
 
-export default function Contact() {
+function Contact({sendContactForm, contactFormSent}) {
 
-    const [fieldsState, setFieldsState] = useState({
+    let emptyMsg = 'This field can\'t be empty';
+
+    let [fieldValues, setFieldValues] = useState({
         name: '',
         email: '',
-        message: ''
+        message: '',
     });
 
-    const [fieldsErrorsState, setFieldsErrorsState] = useState({
+    let [formErrors, setformErrors] = useState({
         name: null,
         email: null,
-        message: null
+        message: null,
     });
 
-    const [formState, setFormState] = useState({
-        isSent: false,
-        isValid: false
-    });
+    useEffect(() => {
+        if (contactFormSent) {
+            setFieldValues({
+                name: '',
+                email: '',
+                message: '',
+            });
+        }
+    }, [contactFormSent])
 
     const handleFieldChange = (e) => {
-        const {value, name} = e.target,
-            emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const name = e.target.name;
+        const value = e.target.value;
 
-        setFieldsState({
-            ...fieldsState,
+        const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        setFieldValues({
+            ...fieldValues,
             [name]: value
         });
 
-
         if (!value.trim()) {
-            setFieldsErrorsState({
-                ...fieldsErrorsState,
-                [name]: 'This field can\'t be empty'
+            setformErrors({
+                ...formErrors,
+                [name]: emptyMsg
             })
         } else {
-            setFieldsErrorsState({
-                ...fieldsErrorsState,
+            setformErrors({
+                ...formErrors,
                 [name]: null
             })
         }
 
         if (name === 'email' && value && !emailRegex.test(value.toLowerCase())) {
-            setFieldsErrorsState({
-                ...fieldsErrorsState,
+            setformErrors({
+                ...formErrors,
                 email: 'Incorrect email address'
             })
         }
@@ -56,49 +66,25 @@ export default function Contact() {
     const handleFormSubmit = (e) => {
         e.preventDefault();
 
-        const hasErrors = !Object.values(fieldsErrorsState).every(item => item === null),
-            hasValues = !Object.values(fieldsState).some(item => item === '');
+        let isEmpty = Object.values(fieldValues).every(item => item === '');
+        let hasErrors = Object.values(formErrors).some(item => item !== null);
 
-        if (!hasValues && !hasErrors) {
-            setFieldsErrorsState({
-                name: `Name can't be empty.`,
-                email: `Email can't be empty.`,
-                message: `Message can't be empty.`
+        if (isEmpty && !hasErrors) {
+            setformErrors({
+                name: emptyMsg,
+                email: emptyMsg,
+                message: emptyMsg,
             });
+
+            return false;
         }
 
-        if (hasValues && !hasErrors) {
-            fetch('http://localhost:3001/form', {
-                method: 'POST',
-                body: JSON.stringify(fieldsState),
-                headers: {
-                    'Content-type': 'application/json'
-                }
-            })
-                .then(async (res) => {
-                    if (res.status >= 400 && res.status < 600) {
-                        if (res.error) {
-                            throw res.error;
-                        } else {
-                            throw new Error('Something went wrong')
-                        }
-                    }
-
-                    setFieldsState({
-                        name: '',
-                        email: '',
-                        message: ''
-                    });
-                    setFormState({
-                        isValid: false,
-                        isSent: true
-                    });
-
-                })
-                .catch((e) => {
-                    console.log(e);
-                });
+        if (hasErrors) {
+            return false;
         }
+
+        sendContactForm(fieldValues);
+
     }
 
     return (
@@ -113,24 +99,30 @@ export default function Contact() {
                     <Form.Control
                         type="text"
                         name="name"
-                        value={fieldsState.name}
+                        value={fieldValues.name}
                         onChange={handleFieldChange}
                     />
-                    <Form.Text className="text-muted">
-                        {fieldsErrorsState.name}
-                    </Form.Text>
+                    {
+                        formErrors.name &&
+                        <Form.Text className={styles.errorMsg}>
+                            {formErrors.name}
+                        </Form.Text>
+                    }
                 </Form.Group>
                 <Form.Group controlId="email">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control
                         type="email"
                         name="email"
-                        value={fieldsState.email}
+                        value={fieldValues.email}
                         onChange={handleFieldChange}
                     />
-                    <Form.Text className="text-muted">
-                        {fieldsErrorsState.email}
-                    </Form.Text>
+                    {
+                        formErrors.email &&
+                        <Form.Text className={styles.errorMsg}>
+                            {formErrors.email}
+                        </Form.Text>
+                    }
                 </Form.Group>
                 <Form.Group controlId="message">
                     <Form.Label>Message</Form.Label>
@@ -138,23 +130,32 @@ export default function Contact() {
                         as="textarea"
                         name="message"
                         rows={5}
-                        value={fieldsState.message}
+                        value={fieldValues.message}
                         onChange={handleFieldChange}
                     />
-                    <Form.Text className="text-muted">
-                        {fieldsErrorsState.message}
-                    </Form.Text>
+                    {
+                        formErrors.message &&
+                        <Form.Text className={styles.errorMsg}>
+                            {formErrors.message}
+                        </Form.Text>
+                    }
                 </Form.Group>
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
-                {
-                    formState.isSent &&
-                    <Alert variant="success" className="mt-3">
-                        Your message successfully sent!
-                    </Alert>
-                }
             </Form>
         </div>
     )
 }
+
+const mapStateToProps = (state) => {
+    return {
+        contactFormSent: state.contactFormSent,
+    };
+};
+
+const mapDispatchToProps = {
+    sendContactForm
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Contact);
