@@ -57,7 +57,7 @@ export function getToken() {
                     return token.jwt;
                 })
                 .catch(() => {
-                    // logOut();
+                    logOut();
                 });
         }
     }
